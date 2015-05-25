@@ -6,18 +6,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.atomic.LongAdder;
 
-/**
- * Created by andy on 5/22/15.
- */
+
 @RestController
+@RequestMapping("/hello")
 public class HelloController {
 
     private static final String template = "Hello, %s!";
     private final LongAdder counter = new LongAdder();
 
-    @RequestMapping(method = RequestMethod.GET, value = "/hello/{name}")
-    public HelloView hello(@PathVariable("name") String name,
-                           @RequestParam(value = "msg", required = false, defaultValue = "Welcome!") String msg
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    public HelloView helloWithName(@PathVariable("name") String name,
+                                   @RequestParam(value = "msg", required = false, defaultValue = "Welcome!") String msg
     ) {
         counter.increment();
 
