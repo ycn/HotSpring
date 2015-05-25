@@ -8,16 +8,27 @@ HUB_NAME = "${group.name}"
 APP_NAME = "${name}"
 APP_VERSION = "${version}"
 APP_PORT = "${server.port}"
+FAILED = False
+
+
+def check_version():
+    global FAILED
+    old_app_version = local("head -n1 version", True)
+    if APP_VERSION <= old_app_version:
+        print "Head Version({0}) must bigger than Current Version({1}), EXIT!".format(APP_VERSION, old_app_version)
+        FAILED = True
 
 
 def docker_build():
-    docker_host = local("ip route | grep docker | cut -d' ' -f 12")
+    if FAILED:
+        return
+
     head_version = local("git rev-parse HEAD", True)
 
     # write info
-    local("echo 'Name: {0}/{1}' > version".format(APP_NAME, HUB_NAME))
-    local("echo 'Version: {0}' >> version".format(APP_VERSION))
-    local("echo 'Build: {0}' >> version".format(head_version))
+    local("echo '{0}' > version".format(APP_VERSION))
+    local("echo 'Name: {0}/{1}' >> version".format(APP_NAME, HUB_NAME))
+    local("echo 'Build: {0}.{1}' >> version".format(APP_VERSION, head_version[:8]))
     local("echo 'Date: {0}' >> version".format(datetime.today()))
     local("git log -1 >> version")
 
@@ -40,6 +51,9 @@ def docker_build():
 
 
 def docker_run():
+    if FAILED:
+        return
+
     # docker host
     docker_host = local("ip -4 addr show scope global dev docker0 | grep inet | awk '{print $2}' | cut -d / -f 1", True)
 
