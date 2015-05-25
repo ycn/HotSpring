@@ -39,10 +39,13 @@ def docker_build():
 
 
 def docker_run():
+    # kill old container
+    local("docker stop `cat container`")
+
     # run
     container_id = local("docker run -dp {0}:{0} {1}/{2}:{3}".format(APP_PORT,
                                                                      APP_NAME.lower(),
                                                                      HUB_NAME.lower(),
                                                                      APP_VERSION.lower()), True)
     # keep container_id
-    local("echo '{0}' > container".format(container_id))
+    local("echo '{0}' > container".format(container_id[:12]))
