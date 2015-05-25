@@ -25,7 +25,9 @@ def docker_build():
         # revert the timestamp changes
         local("find ./{0}/lib/ -exec touch -c -m -t 201407070000.00".format(APP_NAME) + " {} \;")
         # cp DockerFile
-        local("cp ../Dockerfile .")
+        local("cp ./classes/Dockerfile .")
+        # cp version
+        local("cp ../version .")
         # build
         local("docker build -t {0}/{1} .".format(APP_NAME.lower(), HUB_NAME.lower()))
         local("docker tag {0}/{1}:latest {0}/{1}:{2}".format(APP_NAME.lower(), HUB_NAME.lower(), APP_VERSION.lower()))
