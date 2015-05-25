@@ -16,6 +16,8 @@
     </parent>
 
     <properties>
+        <group.name>hotdev</group.name>
+        <server.port>9080</server.port>
         <java.version>1.8</java.version>
         <lombok.version>1.16.4</lombok.version>
         <perf4j.version>0.9.16</perf4j.version>

@@ -4,21 +4,20 @@ from datetime import datetime
 
 from fabric.api import *
 
-HUB_NAME = "hotdev"
-APP_NAME = "HotSpring"
-APP_VERSION = "1.0"
+HUB_NAME = "${group.name}"
+APP_NAME = "${name}"
+APP_VERSION = "${version}"
 
 
 def docker_build():
     head_version = local("git rev-parse HEAD", True)
 
     # write info
+    local("echo 'Name: {0}/{1}' > version".format(APP_NAME, HUB_NAME))
+    local("echo 'Version: {0}' > version".format(APP_VERSION))
     local("echo 'Build: {0}' > version".format(head_version))
     local("echo 'Date: {0}' >> version".format(datetime.today()))
     local("git log -1 >> version")
-
-    # package
-    local("mvn clean package -Denv=prod")
 
     with lcd("target/"):
         # explode fat jar
