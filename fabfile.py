@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
 __author__ = 'andy'
+from datetime import datetime
+
 from fabric.api import *
+
 
 APP_NAME = "HotSpring"
 APP_VERSION = "1.0"
 
 
 def docker_build():
+    # write info
+    local("echo '[Deploy Info]' > version")
+    local("echo 'Deploy Date: {0}' >> version".format(datetime.today()))
+    local("git log -1 >> version")
 
     # package
     local("mvn clean package -Denv=prod")
