@@ -6,7 +6,7 @@
 
     <groupId>cn.hotdev.example</groupId>
     <artifactId>HotSpring</artifactId>
-    <version>1.0</version>
+    <version>1.0.1557</version>
     <name>HotSpring</name>
 
     <parent>
