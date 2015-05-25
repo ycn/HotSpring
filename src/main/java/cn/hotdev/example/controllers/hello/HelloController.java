@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.LongAdder;
 @RequestMapping("/hello")
 public class HelloController {
 
-    private static final String template = "Hello, %s!";
+    private static final String template = "Hello, %s! I'm Newbie! ";
     private final LongAdder counter = new LongAdder();
 
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)
