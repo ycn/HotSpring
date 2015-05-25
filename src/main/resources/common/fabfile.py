@@ -11,6 +11,7 @@ APP_PORT = "${server.port}"
 
 
 def docker_build():
+    docker_host = local("ip route | grep docker | cut -d' ' -f 12")
     head_version = local("git rev-parse HEAD", True)
 
     # write info
@@ -39,13 +40,21 @@ def docker_build():
 
 
 def docker_run():
+    # docker host
+    docker_host = local("ip -4 addr show scope global dev docker0 | grep inet | awk '{print $2}' | cut -d / -f 1", True)
+
     # kill old container
     local("docker stop `cat container`")
 
     # run
-    container_id = local("docker run -dp {0}:{0} {1}/{2}:{3}".format(APP_PORT,
-                                                                     APP_NAME.lower(),
-                                                                     HUB_NAME.lower(),
-                                                                     APP_VERSION.lower()), True)
+    container_id = local(
+        "docker run {4} {5} -dp {0}:{0} {1}/{2}:{3}".format(APP_PORT,
+                                                            APP_NAME.lower(),
+                                                            HUB_NAME.lower(),
+                                                            APP_VERSION.lower(),
+                                                            "--add-host=docker_host:" + docker_host,
+                                                            "--ulimit nofile=65535:65535",
+        ),
+        True)
     # keep container_id
     local("echo '{0}' > container".format(container_id[:12]))
