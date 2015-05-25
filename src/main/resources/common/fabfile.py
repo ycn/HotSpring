@@ -15,8 +15,8 @@ def docker_build():
 
     # write info
     local("echo 'Name: {0}/{1}' > version".format(APP_NAME, HUB_NAME))
-    local("echo 'Version: {0}' > version".format(APP_VERSION))
-    local("echo 'Build: {0}' > version".format(head_version))
+    local("echo 'Version: {0}' >> version".format(APP_VERSION))
+    local("echo 'Build: {0}' >> version".format(head_version))
     local("echo 'Date: {0}' >> version".format(datetime.today()))
     local("git log -1 >> version")
 
@@ -28,7 +28,7 @@ def docker_build():
         # cp DockerFile
         local("cp ./classes/Dockerfile .")
         # cp version
-        local("cp ../version .")
+        local("cp ../version ./{0}/".format(APP_NAME))
         # build
         local("docker build -t {0}/{1} .".format(APP_NAME.lower(),
                                                  HUB_NAME.lower()))
@@ -40,7 +40,9 @@ def docker_build():
 
 def docker_run():
     # run
-    local("docker run -dp {0}:{0} {1}/{2}:{3}".format(APP_PORT,
-                                                      APP_NAME.lower(),
-                                                      HUB_NAME.lower(),
-                                                      APP_VERSION.lower()))
+    container_id = local("docker run -dp {0}:{0} {1}/{2}:{3}".format(APP_PORT,
+                                                                     APP_NAME.lower(),
+                                                                     HUB_NAME.lower(),
+                                                                     APP_VERSION.lower()), True)
+    # keep container_id
+    local("echo '{0}' > container".format(container_id))
