@@ -19,4 +19,4 @@ def docker_build():
         # cp DockerFile
         local("cp ../Dockerfile .")
         # build
-        local("docker build -t {0} .".format(APP_NAME))
+        local("docker build -t {0} .".format(APP_NAME.lower()))
