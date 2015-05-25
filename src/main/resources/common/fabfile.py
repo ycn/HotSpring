@@ -7,6 +7,7 @@ from fabric.api import *
 HUB_NAME = "${group.name}"
 APP_NAME = "${name}"
 APP_VERSION = "${version}"
+APP_PORT = "${server.port}"
 
 
 def docker_build():
@@ -29,5 +30,17 @@ def docker_build():
         # cp version
         local("cp ../version .")
         # build
-        local("docker build -t {0}/{1} .".format(APP_NAME.lower(), HUB_NAME.lower()))
-        local("docker tag {0}/{1}:latest {0}/{1}:{2}".format(APP_NAME.lower(), HUB_NAME.lower(), APP_VERSION.lower()))
+        local("docker build -t {0}/{1} .".format(APP_NAME.lower(),
+                                                 HUB_NAME.lower()))
+
+        local("docker tag {0}/{1}:latest {0}/{1}:{2}".format(APP_NAME.lower(),
+                                                             HUB_NAME.lower(),
+                                                             APP_VERSION.lower()))
+
+
+def docker_run():
+    # run
+    local("docker run -dp {0}:{0} {1}/{2}:{3}".format(APP_PORT,
+                                                      APP_NAME.lower(),
+                                                      HUB_NAME.lower(),
+                                                      APP_VERSION.lower()))

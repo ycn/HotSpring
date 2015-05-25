@@ -1,4 +1,4 @@
-FROM java:8-jre
+FROM errordeveloper/oracle-jre
 
 ADD ${name}/lib/ /${name}/lib/
 
