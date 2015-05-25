@@ -10,4 +10,4 @@ mvn clean package -Denv=prod
 cp target/classes/fabfile.py .
 
 # docker
-fab docker_build
+fab check_version docker_build docker_run
