@@ -15,7 +15,7 @@ def check_version():
     global FAILED
     old_app_version = local("head -n1 version", True)
     if APP_VERSION <= old_app_version:
-        print "Head Version({0}) must bigger than Current Version({1}), EXIT!".format(APP_VERSION, old_app_version)
+        print "Head Version({0} in pom.xml) must bigger than Current Version({1}), EXIT!".format(APP_VERSION, old_app_version)
         FAILED = True
 
 
