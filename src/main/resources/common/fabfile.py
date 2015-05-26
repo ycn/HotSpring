@@ -51,7 +51,7 @@ def docker_build():
                                                              APP_VERSION.lower()))
 
 
-def docker_run():
+def docker_run(container_id=None):
     if FAILED:
         return
 
@@ -59,19 +59,38 @@ def docker_run():
     docker_host = local("ip -4 addr show scope global dev docker0 | grep inet | awk '{print $2}' | cut -d / -f 1", True)
 
     # kill old container
-    local("cp container container.rollback")
-    local("docker stop `cat container`")
+    running_id = local("docker ps -a | grep {0} | grep 'Up' | cut -d' ' -f 1".format(APP_NAME.lower()), True)
+    running_id = running_id.strip()
+
+    if running_id and len(running_id) > 0:
+        local("docker stop {0}".format(running_id))
+    else:
+        local("docker stop `cat container`")
 
     # run
-    container_id = local(
-        "docker run {4} {5} -dp {0}:{0} {1}/{2}:{3}".format(APP_PORT,
-                                                            APP_NAME.lower(),
-                                                            HUB_NAME.lower(),
-                                                            APP_VERSION.lower(),
-                                                            "--add-host=docker_host:" + docker_host,
-                                                            "--ulimit nofile=65535:65535",
-        ),
-        True)
+    if container_id:
+
+        # already run?
+        exited_id = local("docker ps -a | grep {0} | grep 'Exited' | cut -d' ' -f 1".format(container_id))
+        exited_id = exited_id.strip()
+
+        if exited_id and len(exited_id) > 0:
+            local("docker start {0}".format(exited_id))
+        else:
+            print "Can't run, container:{0} not found or not exited!"
+
+    else:
+        container_id = local(
+            "docker run {4} {5} -dp {0}:{0} {1}/{2}:{3}".format(APP_PORT,
+                                                                APP_NAME.lower(),
+                                                                HUB_NAME.lower(),
+                                                                APP_VERSION.lower(),
+                                                                "--add-host=docker_host:" + docker_host,
+                                                                "--ulimit nofile=65535:65535"), True)
+
+        # keep rollback_id
+        local("cp container container.rollback")
+
     # keep container_id
     local("echo '{0}' > container".format(container_id[:12]))
 

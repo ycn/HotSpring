@@ -2,6 +2,7 @@
 FROM errordeveloper/oracle-jre
 MAINTAINER Andy Yuan <andy@ycn.cc>
 
+RUN mkdir -p /data/logs
 VOLUME /data/logs
 
 ADD ${name}/lib/ /${name}/lib/
