@@ -126,10 +126,12 @@ def docker_cleanup():
 
     if exited_containers and len(exited_containers) > 0:
         for container in exited_containers:
-            local("docker rm -lv {0}".format(container))
+            local("docker rm -v {0}".format(container))
 
     if exited_images and len(exited_images) > 0:
         for image in exited_images:
             local("docker rmi {0}".format(image))
+
+    local("rm -f container.rollback")
 
     print "Docker cleanup!"
