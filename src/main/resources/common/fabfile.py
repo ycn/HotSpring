@@ -81,12 +81,13 @@ def docker_run(container_id=None):
 
     else:
         container_id = local(
-            "docker run {4} {5} -dp {0}:{0} {1}/{2}:{3}".format(APP_PORT,
-                                                                APP_NAME.lower(),
-                                                                HUB_NAME.lower(),
-                                                                APP_VERSION.lower(),
-                                                                "--add-host=docker_host:" + docker_host,
-                                                                "--ulimit nofile=65535:65535"), True)
+            "docker run {4} {5} {6} -dp {0}:{0} {1}/{2}:{3}".format(APP_PORT,
+                                                                    APP_NAME.lower(),
+                                                                    HUB_NAME.lower(),
+                                                                    APP_VERSION.lower(),
+                                                                    "--add-host=docker_host:" + docker_host,
+                                                                    "--ulimit nofile=65535:65535",
+                                                                    "-v /data/logs:/data/logs"), True)
 
         # keep rollback_id
         local("cp container container.rollback")
