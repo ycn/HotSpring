@@ -15,7 +15,8 @@ def check_version():
     global FAILED
     old_app_version = local("head -n1 version", True)
     if APP_VERSION <= old_app_version:
-        print "Head Version({0} in pom.xml) must bigger than Current Version({1}), EXIT!".format(APP_VERSION, old_app_version)
+        print "Head Version({0} in pom.xml) must bigger than Current Version({1}), EXIT!".format(APP_VERSION,
+                                                                                                 old_app_version)
         FAILED = True
 
 
@@ -58,6 +59,7 @@ def docker_run():
     docker_host = local("ip -4 addr show scope global dev docker0 | grep inet | awk '{print $2}' | cut -d / -f 1", True)
 
     # kill old container
+    local("cp container container.rollback")
     local("docker stop `cat container`")
 
     # run
@@ -72,3 +74,20 @@ def docker_run():
         True)
     # keep container_id
     local("echo '{0}' > container".format(container_id[:12]))
+
+
+def docker_rollback():
+    has_run = local("[ -f 'container' ] && echo 'yes' || echo 'no'", True)
+    has_rollback = local("[ -f 'container.rollback' ] && echo 'yes' || echo 'no'", True)
+
+    if has_run == 'yes' and has_rollback == 'yes':
+        run_id = local("cat container", True)
+        rollback_id = local("cat container.rollback", True)
+
+        local("docker stop {0}".format(run_id))
+        local("docker start {1}".format(rollback_id))
+        local("rm -f container.rollback")
+        local("echo '{0}' > container".format(rollback_id))
+
+    else:
+        print "Can't doing rollback, container.rollback file not found!"
