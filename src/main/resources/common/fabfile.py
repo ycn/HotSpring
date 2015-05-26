@@ -115,3 +115,21 @@ def docker_rollback():
 
     else:
         print "Can't doing rollback, container.rollback file not found!"
+
+
+def docker_cleanup():
+    exited_containers = local("docker ps -a | grep " + APP_NAME.lower() + " | grep 'Exited' | awk '{print $1}'", True)
+    exited_containers = exited_containers.split("\n")
+
+    exited_images = local("docker ps -a | grep " + APP_NAME.lower() + " | grep 'Exited' | awk '{print $2}'", True)
+    exited_images = exited_images.split("\n")
+
+    if exited_containers and len(exited_containers) > 0:
+        for container in exited_containers:
+            local("docker rm -lv {0}".format(container))
+
+    if exited_images and len(exited_images) > 0:
+        for image in exited_images:
+            local("docker rmi {0}".format(image))
+
+    print "Docker cleanup!"
