@@ -85,7 +85,7 @@ def docker_rollback():
         rollback_id = local("cat container.rollback", True)
 
         local("docker stop {0}".format(run_id))
-        local("docker start {1}".format(rollback_id))
+        local("docker start {0}".format(rollback_id))
         local("rm -f container.rollback")
         local("echo '{0}' > container".format(rollback_id))
 
