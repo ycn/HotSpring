@@ -1,0 +1,3 @@
+spring:
+  datastore:
+    initialize: true

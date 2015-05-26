@@ -13,8 +13,8 @@ public class ErrorController implements org.springframework.boot.autoconfigure.w
     private static final String PATH = "/error";
 
     @RequestMapping(value = PATH, method = RequestMethod.GET)
-    public ErrorView index() {
-        cn.hotdev.example.models.error.Error error = new Error(404, "Not Found");
+    public ErrorView home() {
+        Error error = new Error(404, "Not Found");
         return new ErrorView(error);
     }
 
