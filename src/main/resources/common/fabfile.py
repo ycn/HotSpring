@@ -71,13 +71,17 @@ def docker_run(container_id=None):
     if container_id:
 
         # already run?
-        exited_id = local("docker ps -a | grep {0} | grep 'Exited' | cut -d' ' -f 1".format(container_id))
+        exited_id = local("docker ps -a | grep {0} | grep 'Exited' | cut -d' ' -f 1".format(container_id), True)
         exited_id = exited_id.strip()
 
         if exited_id and len(exited_id) > 0:
             local("docker start {0}".format(exited_id))
+
+            # keep container_id
+            local("echo '{0}' > container".format(container_id[:12]))
+
         else:
-            print "Can't run, container:{0} not found or not exited!"
+            print "Can't run, container:{0} not found or not exited!".format(container_id)
 
     else:
         container_id = local(
@@ -92,8 +96,8 @@ def docker_run(container_id=None):
         # keep rollback_id
         local("cp container container.rollback")
 
-    # keep container_id
-    local("echo '{0}' > container".format(container_id[:12]))
+        # keep container_id
+        local("echo '{0}' > container".format(container_id[:12]))
 
 
 def docker_rollback():
