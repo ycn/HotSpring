@@ -1,3 +1,19 @@
+server:
+  address: 127.0.0.1
+  sessionTimeout: 30
+
 spring:
-  datastore:
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+
+  datasource:
     initialize: true
+    continueOnError: false
+    platform: postgresql
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/test
+    username: andy
+    password: andy

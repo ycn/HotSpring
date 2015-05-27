@@ -1,0 +1,14 @@
+server:
+  address: 0.0.0.0
+  sessionTimeout: 30
+
+spring:
+  jpa:
+    show-sql: false
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+  datasource:
+    initialize: false
+    continueOnError: true

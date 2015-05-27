@@ -81,7 +81,11 @@
             <groupId>org.perf4j</groupId>
             <artifactId>perf4j</artifactId>
             <version>${perf4j.version}</version>
-            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4-1201-jdbc41</version>
         </dependency>
     </dependencies>
 

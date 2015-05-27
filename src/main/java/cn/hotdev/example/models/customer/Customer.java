@@ -2,10 +2,7 @@ package cn.hotdev.example.models.customer;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -13,8 +10,11 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "serial") // postgresql fix
     private Long id;
+    @Column(nullable = true, length = 100)
     private String firstName;
+    @Column(nullable = true, length = 100)
     private String lastName;
 
     @Override
