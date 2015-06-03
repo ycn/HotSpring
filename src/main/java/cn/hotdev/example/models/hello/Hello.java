@@ -1,16 +1,17 @@
 package cn.hotdev.example.models.hello;
 
+import cn.hotdev.example.models.base.Base;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-/**
- * Created by andy on 5/22/15.
- */
+
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Data
-public class Hello {
+public class Hello extends Base {
     private long id;
     private String content;
     private String msg;

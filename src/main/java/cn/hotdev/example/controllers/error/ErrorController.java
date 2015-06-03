@@ -1,5 +1,6 @@
 package cn.hotdev.example.controllers.error;
 
+import cn.hotdev.example.constants.ErrorStatus;
 import cn.hotdev.example.models.error.Error;
 import cn.hotdev.example.viewmodels.error.ErrorView;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class ErrorController implements org.springframework.boot.autoconfigure.w
     @RequestMapping(value = PATH, method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ErrorView home() {
-        Error error = new Error(404, "Not Found");
+        Error error = new Error(ErrorStatus.PAGE_NOT_FOUND, "Page Not Found");
         return new ErrorView(error);
     }
 

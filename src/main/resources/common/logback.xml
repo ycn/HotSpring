@@ -54,11 +54,19 @@
         </filter>
     </appender>
 
+    <appender name="ASYNC_INFO_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="INFO_FILE" />
+    </appender>
+
+    <appender name="ASYNC_ERROR_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="ERROR_FILE" />
+    </appender>
+
     <logger name="cn.hotdev.example" level="INFO"/>
 
     <root level="INFO">
-        <appender-ref ref="INFO_FILE"/>
-        <appender-ref ref="ERROR_FILE"/>
+        <appender-ref ref="ASYNC_INFO_FILE"/>
+        <appender-ref ref="ASYNC_ERROR_FILE"/>
     </root>
 
 </configuration>

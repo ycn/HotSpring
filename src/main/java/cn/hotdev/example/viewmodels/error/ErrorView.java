@@ -11,7 +11,7 @@ public class ErrorView {
     private String message;
 
     public ErrorView(cn.hotdev.example.models.error.Error error) {
-        status = error.getStatus();
+        status = error.getStatus().getValue();
         message = error.getMessage();
     }
 }

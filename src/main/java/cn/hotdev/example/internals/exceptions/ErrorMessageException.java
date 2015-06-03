@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public final class ErrorMessageException extends Exception {
+public final class ErrorMessageException extends RuntimeException {
     private cn.hotdev.example.models.error.Error error;
 }

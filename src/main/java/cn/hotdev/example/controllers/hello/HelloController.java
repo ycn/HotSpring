@@ -1,5 +1,6 @@
 package cn.hotdev.example.controllers.hello;
 
+import cn.hotdev.example.constants.ErrorStatus;
 import cn.hotdev.example.internals.exceptions.BadRequestException;
 import cn.hotdev.example.internals.exceptions.ErrorMessageException;
 import cn.hotdev.example.models.customer.Customer;
@@ -51,7 +52,7 @@ public class HelloController {
         }
 
         if (name.equals("error_msg")) {
-            throw new ErrorMessageException(new Error(123, "meet name 'error_msg'"));
+            throw new ErrorMessageException(new Error(ErrorStatus.TEST, "meet name '{}'", name));
         }
 
         Hello hello = new Hello(counter.longValue(), String.format(template, firstName, name), msg);
@@ -62,7 +63,7 @@ public class HelloController {
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorView helloGotBadRequestException(BadRequestException e) {
-        return new ErrorView(new Error(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        return new ErrorView(new Error(ErrorStatus.BAD_REQUEST, e.getMessage()));
     }
 
     @ExceptionHandler(ErrorMessageException.class)
