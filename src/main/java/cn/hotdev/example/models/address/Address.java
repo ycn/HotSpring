@@ -1,8 +1,10 @@
 package cn.hotdev.example.models.address;
 
-import cn.hotdev.example.models.base.Base;
+import cn.hotdev.example.models.base.EntityBase;
 import cn.hotdev.example.models.customer.Customer;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,13 +13,15 @@ import javax.persistence.*;
 @Entity
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class Address extends Base {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Address extends EntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     private Customer customer;
     @Column(nullable = false)
     private String addr;

@@ -1,6 +1,6 @@
 package cn.hotdev.example.models.base;
 
-public abstract class Base {
+public abstract class EntityBase {
 
 
 }

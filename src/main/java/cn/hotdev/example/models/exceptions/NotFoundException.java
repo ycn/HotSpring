@@ -1,6 +1,6 @@
-package cn.hotdev.example.internals.exceptions;
+package cn.hotdev.example.models.exceptions;
 
-import cn.hotdev.example.internals.tools.Tools;
+import cn.hotdev.example.utils.StringTool;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 public class NotFoundException extends RuntimeException {
 
     public NotFoundException(String format, Object... arguments) {
-        super(Tools.formatString(format, arguments));
+        super(StringTool.formatString(format, arguments));
     }
 }

@@ -1,8 +1,10 @@
 package cn.hotdev.example.models.customer;
 
 import cn.hotdev.example.models.address.Address;
-import cn.hotdev.example.models.base.Base;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import cn.hotdev.example.models.base.EntityBase;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,7 +15,9 @@ import java.util.Set;
 @Entity
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class Customer extends Base {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Customer extends EntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,7 +30,7 @@ public class Customer extends Base {
     @Column(nullable = false)
     private Integer age;
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
+    @JsonIgnore
     private Set<Address> addresses = new LinkedHashSet<Address>();
 
     public void update(Customer other) {

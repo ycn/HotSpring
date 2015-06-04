@@ -1,4 +1,4 @@
-package cn.hotdev.example.internals.exceptions;
+package cn.hotdev.example.models.exceptions;
 
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

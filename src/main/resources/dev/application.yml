@@ -7,13 +7,15 @@ spring:
     show-sql: true
     generate-ddl: true
     hibernate:
+      show-sql: true
       ddl-auto: create-drop
+      dialect: org.hibernate.dialect.MySQLDialect
 
   datasource:
     initialize: true
     continueOnError: false
     platform: mysql
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8
     username: root
     password: root
