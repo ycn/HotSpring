@@ -7,8 +7,8 @@ spring:
     show-sql: true
     generate-ddl: true
     hibernate:
-      show-sql: true
       ddl-auto: create-drop
+      show-sql: true
       dialect: org.hibernate.dialect.MySQLDialect
 
   datasource:
@@ -19,3 +19,6 @@ spring:
     url: jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8
     username: root
     password: root
+
+app:
+  name: HotSpring

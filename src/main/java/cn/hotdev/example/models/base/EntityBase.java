@@ -1,6 +1,8 @@
 package cn.hotdev.example.models.base;
 
-public abstract class EntityBase {
+import java.io.Serializable;
+
+public abstract class EntityBase implements Serializable {
 
 
 }

@@ -1,12 +1,16 @@
 package cn.hotdev.example.controllers;
 
+import cn.hotdev.example.constants.ConfigOption;
 import cn.hotdev.example.models.customer.Customer;
 import cn.hotdev.example.models.customer.CustomerRepository;
 import cn.hotdev.example.models.exceptions.BadRequestException;
 import cn.hotdev.example.models.hello.Hello;
 import cn.hotdev.example.models.rest.RestResponse;
 import cn.hotdev.example.models.rest.RestStatus;
+import cn.hotdev.example.services.ConfigService;
+import cn.hotdev.example.utils.StaticConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +27,13 @@ public class HelloRestController extends BaseRestController {
 
     private static final String template = "Hello, %s %s!";
     private final LongAdder counter = new LongAdder();
+
+    // 测试读取配置文件
+    @Value("${app.name}")
+    private String appName;
+
+    @Autowired
+    private ConfigService configService;
 
     /**
      * @param name 姓名
@@ -42,6 +53,8 @@ public class HelloRestController extends BaseRestController {
 
         String firstName = "Unknown";
 
+        StaticConfig config = StaticConfig.getInstance();
+
         if (customers != null && !customers.isEmpty()) {
             Customer customer = customers.get(0);
             firstName = customer.getFirstName();
@@ -49,7 +62,10 @@ public class HelloRestController extends BaseRestController {
                 msg = "I found U!";
         } else {
             if (msg != null && !msg.isEmpty())
-                msg = "Who are U22222?";
+                msg = "Who are U22222? this_app="
+                        + appName
+                        + " or " + config.get(ConfigOption.app_name)
+                        + " or " + configService.getConfig("app_name", "ABC");
         }
 
         if (name.equals("error")) {

@@ -8,7 +8,11 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+      show-sql: false
 
   datasource:
     initialize: false
     continueOnError: true
+
+app:
+  name: HotSpring
