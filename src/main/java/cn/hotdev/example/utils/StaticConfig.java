@@ -10,6 +10,7 @@ public class StaticConfig {
     private static final AtomicReference<StaticConfig> instance = new AtomicReference<StaticConfig>();
 
     private PropertiesFileTool delegate;
+    private PropertiesFileTool dockerDelegate;
 
     public static StaticConfig getInstance() {
         if (instance.get() == null) {
@@ -20,6 +21,7 @@ public class StaticConfig {
 
     private StaticConfig() {
         delegate = new PropertiesFileTool("config.properties");
+        dockerDelegate = new PropertiesFileTool("docker.properties");
     }
 
 
@@ -40,7 +42,11 @@ public class StaticConfig {
     }
 
     public String get(ConfigOption option) {
-        return delegate.option(option);
+        if (ConfigOption.docker_host.equals(option)) {
+            return dockerDelegate.option(option);
+        } else {
+            return delegate.option(option);
+        }
     }
 
 }

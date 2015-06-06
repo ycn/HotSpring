@@ -17,10 +17,21 @@ public class RedisTool {
     private static final Logger log = LoggerFactory.getLogger(RedisTool.class);
     private static final StaticConfig config = StaticConfig.getInstance();
 
-    private static final JedisPool pool = new JedisPool(
-            new JedisPoolConfig(),
-            config.get(ConfigOption.global_redis_host),
-            config.getInt(ConfigOption.global_redis_port));
+    private static final JedisPool pool;
+
+    static {
+        String dockerHost = config.get(ConfigOption.docker_host);
+        String redisHost = config.get(ConfigOption.global_redis_host);
+        int redisPort = config.getInt(ConfigOption.global_redis_port);
+
+        String host = redisHost;
+        if (dockerHost != null && !dockerHost.isEmpty())
+            host = dockerHost;
+
+        pool = new JedisPool(
+                new JedisPoolConfig(),
+                host, redisPort);
+    }
 
     // 报警阈值
     private static final int retryWarnValue = 20;

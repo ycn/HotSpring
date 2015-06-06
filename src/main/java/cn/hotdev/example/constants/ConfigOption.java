@@ -3,6 +3,7 @@ package cn.hotdev.example.constants;
 
 public enum ConfigOption {
 
+    docker_host("localhost"),
     global_redis_host("localhost"),
     global_redis_port("6379"),
     cache_obj_size("1000"),
