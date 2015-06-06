@@ -20,17 +20,12 @@ public class RedisTool {
     private static final JedisPool pool;
 
     static {
-        String dockerHost = config.get(ConfigOption.docker_host);
         String redisHost = config.get(ConfigOption.global_redis_host);
         int redisPort = config.getInt(ConfigOption.global_redis_port);
 
-        String host = redisHost;
-        if (dockerHost != null && !dockerHost.isEmpty())
-            host = dockerHost;
-
         pool = new JedisPool(
                 new JedisPoolConfig(),
-                host, redisPort);
+                redisHost, redisPort);
     }
 
     // 报警阈值
