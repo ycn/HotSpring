@@ -26,7 +26,13 @@ public class WeixinServiceImpl implements WeixinService {
 
     @Autowired
     public WeixinServiceImpl(ConfigService configService) {
+
         this.configService = configService;
+
+        String app_id = configService.getConfig("app_id");
+        if (app_id == null || app_id.isEmpty()) {
+            throw new RuntimeException("no config for weixin found !!!");
+        }
 
         wxMpConfigStorage = new WxMpInMemoryConfigStorage();
         wxMpConfigStorage.setAppId(configService.getConfig("app_id"));
