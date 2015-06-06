@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Map;
 
 @NoArgsConstructor
@@ -22,11 +21,7 @@ public class PersistCacheServiceImpl implements CacheService {
 
     @Override
     public <T> T get(String key, Class<T> type) {
-        try {
-            return cache.get(key, type);
-        } catch (IOException e) {
-        }
-        return null;
+        return cache.get(key, type);
     }
 
     @Override

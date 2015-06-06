@@ -2,6 +2,8 @@ package cn.hotdev.example.utils;
 
 
 import cn.hotdev.example.constants.ConfigOption;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URL;
@@ -9,6 +11,8 @@ import java.util.Properties;
 
 
 public class PropertiesFileTool {
+    private static final Logger log = LoggerFactory.getLogger(PropertiesFileTool.class);
+
     private Properties properties;
     private String fileName;
     private boolean isLoaded;
@@ -40,18 +44,18 @@ public class PropertiesFileTool {
                 is = new FileInputStream(f);
                 properties.load(is);
                 isLoaded = true;
-                System.out.println("Loaded outside properties " + fileName);
+                log.info("Loaded outside properties: {}", fileName);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Can't open outside properties " + fileName);
+            log.info("Can't open outside properties: {}", fileName);
         } catch (IOException e) {
-            System.out.println("Can't read outside properties " + fileName);
+            log.info("Can't read outside properties: {}", fileName);
         } finally {
             if (is != null) {
                 try {
                     is.close();
                 } catch (IOException e) {
-                    System.out.println("Loaded open outside properties got exception " + e.getMessage());
+                    log.info("Loaded open outside properties failed: {}, err={}", fileName, e.getMessage());
                 }
             }
         }
@@ -65,17 +69,17 @@ public class PropertiesFileTool {
                     properties.load(is);
 
                 isLoaded = true;
-                System.out.println("Loaded inside properties " + fileName);
+                log.info("Loaded inside properties: {}", fileName);
             } catch (FileNotFoundException e) {
-                System.out.println("Can't open inside properties " + fileName);
+                log.info("Can't open inside properties: {}", fileName);
             } catch (IOException e) {
-                System.out.println("Can't read inside properties " + fileName);
+                log.info("Can't read inside properties: {}", fileName);
             } finally {
                 if (is != null) {
                     try {
                         is.close();
                     } catch (IOException e) {
-                        System.out.println("Loaded open inside properties got exception " + e.getMessage());
+                        log.info("Loaded open inside properties failed: {}, err={}", fileName, e.getMessage());
                     }
                 }
             }
@@ -105,6 +109,7 @@ public class PropertiesFileTool {
         try {
             v = Integer.parseInt(property);
         } catch (NumberFormatException e) {
+            log.error("property '{}' to int failed: {}", option.name(), property);
         }
 
         return v;
@@ -122,6 +127,7 @@ public class PropertiesFileTool {
         try {
             v = Integer.parseInt(property);
         } catch (NumberFormatException e) {
+            log.error("property '{}' to long failed: {}", option.name(), property);
         }
 
         return v;
@@ -139,6 +145,7 @@ public class PropertiesFileTool {
         try {
             v = Double.parseDouble(property);
         } catch (NumberFormatException e) {
+            log.error("property '{}' to double failed: {}", option.name(), property);
         }
 
         return v;

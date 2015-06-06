@@ -51,7 +51,7 @@ public class RedisTool {
         String value = null;
         if (client != null) {
 
-            log.info("redis: get <{}>", key);
+            log.info("redis({}): get {}, db={}", id, key, db);
 
             try {
                 Pipeline p = client.pipelined();
@@ -77,7 +77,7 @@ public class RedisTool {
 
         if (client != null) {
 
-            log.info("redis: getAll <{}>", keys);
+            log.info("redis({}): getAll {}, db={}", id, keys, db);
 
             try {
                 Pipeline p = client.pipelined();
@@ -113,7 +113,7 @@ public class RedisTool {
 
         if (client != null) {
 
-            log.info("redis: set <{}>", key);
+            log.info("redis({}): set {}, db={}", id, key, db);
 
             try {
                 Pipeline p = client.pipelined();
@@ -140,17 +140,22 @@ public class RedisTool {
 
         // retry
         try {
+
             client = pool.getResource();
+
+            log.info("redis({}) connected.", id);
+
         } catch (JedisConnectionException e) {
             retry++;
             if (retry > retryWarnValue) {
-                log.warn("redis({}) maybe down retry over {} times: {}", id, retryWarnValue, retry);
+                log.warn("redis({}) maybe down: retry={}", id, retry);
             }
         }
     }
 
     public void close() {
-        if (client != null)
+        if (client != null) {
             client.close();
+        }
     }
 }

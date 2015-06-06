@@ -67,6 +67,11 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
+    public String getConfig(String key) {
+        return getConfig(key, "");
+    }
+
+    @Override
     public String getConfig(String key, String defaultValue) {
         String value = getFromCache(key);
         if (value == null)

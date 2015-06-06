@@ -6,4 +6,9 @@ import org.springframework.stereotype.Service;
 public interface WeixinService {
 
 
+    boolean checkSignature(String signature, String timestamp, String nonce);
+
+    String routeMessage(String xmlInMessage);
+
+    String routeEncryptedMessage(String xmlInMessage, String timestamp, String nonce, String msgSignature);
 }

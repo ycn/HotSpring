@@ -45,6 +45,11 @@ public class PersistObjectCache extends ObjectCache {
         return cache.asMap().keySet();
     }
 
+    @Override
+    public int getDb() {
+        return redisDb;
+    }
+
     public String get(String key) {
 
         if (key == null || key.isEmpty())
@@ -53,7 +58,7 @@ public class PersistObjectCache extends ObjectCache {
         try {
             return cache.getUnchecked(key);
         } catch (UncheckedExecutionException e) {
-            log.warn("PersistObjectCache got exception: key={}, db={}, err={}", key, redisDb, e.getMessage());
+            log.warn("unchecked exception: key={}, db={}, err={}", key, redisDb, e.getMessage());
         }
 
         return null;
@@ -69,7 +74,7 @@ public class PersistObjectCache extends ObjectCache {
         try {
             map = cache.getAll(keys);
         } catch (ExecutionException | UncheckedExecutionException | ExecutionError e) {
-            log.warn("PersistObjectCache got exception: keys={}, db={}, err={}", keys, redisDb, e.getMessage());
+            log.warn("unchecked exception: keys={}, db={}, err={}", keys, redisDb, e.getMessage());
         }
 
         // fill absent objects

@@ -60,14 +60,16 @@
     </appender>
 
     <appender name="ASYNC_INFO_FILE" class="ch.qos.logback.classic.AsyncAppender">
-        <appender-ref ref="INFO_FILE" />
+        <appender-ref ref="INFO_FILE"/>
     </appender>
 
     <appender name="ASYNC_ERROR_FILE" class="ch.qos.logback.classic.AsyncAppender">
-        <appender-ref ref="ERROR_FILE" />
+        <appender-ref ref="ERROR_FILE"/>
     </appender>
 
-    <logger name="cn.hotdev.example" level="DEBUG"/>
+    <logger name="cn.hotdev" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE" level="DEBUG"/>
+    </logger>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>

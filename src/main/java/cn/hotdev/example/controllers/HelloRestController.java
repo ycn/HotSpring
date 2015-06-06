@@ -9,6 +9,8 @@ import cn.hotdev.example.models.rest.RestResponse;
 import cn.hotdev.example.models.rest.RestStatus;
 import cn.hotdev.example.services.ConfigService;
 import cn.hotdev.example.utils.StaticConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ import java.util.concurrent.atomic.LongAdder;
 @RestController
 @RequestMapping("/hello")
 public class HelloRestController extends BaseRestController {
+
+    private static final Logger log = LoggerFactory.getLogger(HelloRestController.class);
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -40,8 +44,7 @@ public class HelloRestController extends BaseRestController {
      * @param msg  消息
      * @return { "data" : { "hello" : {@linkplain cn.hotdev.example.models.hello.Hello Hello} } }
      * @throws Exception
-     * @title Hello测试接口
-     * @summary 会输出name参数和msg参数
+     * @summary Hello测试接口: 会输出name参数和msg参数
      */
     @RequestMapping(value = "/{name}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public RestResponse<Hello> helloWithName(@PathVariable("name") String name,
@@ -65,8 +68,12 @@ public class HelloRestController extends BaseRestController {
                 msg = "Who are U22222? this_app="
                         + appName
                         + " or " + config.get(ConfigOption.app_name)
-                        + " or " + configService.getConfig("app_name", "ABC");
+                        + " or " + configService.getConfig("app_name", "ABC")
+                        + " or " + configService.getConfig("hello_example", Hello.class);
         }
+
+        log.debug("hello!!!!!! this is hello controller calling...");
+
 
         if (name.equals("error")) {
             throw new BadRequestException("name is bad");

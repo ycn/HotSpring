@@ -13,6 +13,8 @@ public interface ConfigService {
 
     public double getConfig(String key, double defaultValue);
 
+    public String getConfig(String key);
+
     public String getConfig(String key, String defaultValue);
 
     public <T> T getConfig(String key, Class<T> type);

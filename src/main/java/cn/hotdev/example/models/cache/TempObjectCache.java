@@ -49,6 +49,11 @@ public class TempObjectCache extends ObjectCache {
         return cache.asMap().keySet();
     }
 
+    @Override
+    public int getDb() {
+        return redisDb;
+    }
+
     public String get(String key) {
 
         if (key == null || key.isEmpty())
@@ -59,7 +64,7 @@ public class TempObjectCache extends ObjectCache {
         if (value != null && !value.isEmpty()) {
 
             // try to read from backup redis
-            log.info("read TempObjectCache from redis: key={}, db={}", key, redisDb);
+            log.info("read from redis: key={}, db={}", key, redisDb);
 
             String redisVal = redisTool.use(redisDb).get(key);
 
@@ -92,7 +97,7 @@ public class TempObjectCache extends ObjectCache {
 
         // read missing from backup redis
         if (!missingKeys.isEmpty()) {
-            log.info("read TempObjectCache from redis: keys={}, db={}", missingKeys, redisDb);
+            log.info("read from redis: keys={}, db={}", missingKeys, redisDb);
 
             Map<String, String> missingMap = redisTool.use(redisDb).getAll(missingKeys);
 
@@ -132,12 +137,12 @@ public class TempObjectCache extends ObjectCache {
             cache.put(key, value);
 
             // write to redis for backup
-            log.info("write TempObjectCache to redis: key={}, db={}", key, redisDb);
+            log.info("write to redis: key={}, db={}", key, redisDb);
 
             redisTool.use(redisDb).set(key, value, redisExpire);
 
         } catch (JsonProcessingException e) {
-            log.error("serialize TempObjectCache got exception: key={}, db={}, err={}", key, redisDb, e.getMessage());
+            log.error("object serialize failed: key={}, db={}, err={}", key, redisDb, e.getMessage());
         }
     }
 
