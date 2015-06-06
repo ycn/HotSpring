@@ -24,10 +24,6 @@ def docker_build():
     if FAILED:
         return
 
-    # docker host file
-    docker_host = local("ip -4 addr show scope global dev docker0 | grep inet | awk '{print $2}' | cut -d / -f 1", True)
-    local("echo 'docker_host={0}' > docker.properties".format(docker_host))
-
     head_version = local("git rev-parse HEAD", True)
 
     # write info
@@ -44,9 +40,8 @@ def docker_build():
         local("find ./{0}/lib/ -exec touch -c -m -t 201407070000.00".format(APP_NAME) + " {} \;")
         # cp DockerFile
         local("cp ./classes/Dockerfile .")
-        # cp version, docker.properties
+        # cp version
         local("cp ../version ./{0}/".format(APP_NAME))
-        local("cp ../docker.properties ./{0}/".format(APP_NAME))
         # build
         local("docker build -t {0}/{1} .".format(APP_NAME.lower(),
                                                  HUB_NAME.lower()))
