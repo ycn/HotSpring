@@ -5,9 +5,6 @@ import cn.hotdev.example.models.exceptions.BadRequestException;
 import cn.hotdev.example.models.exceptions.NotFoundException;
 import cn.hotdev.example.models.rest.RestResponse;
 import cn.hotdev.example.models.rest.RestStatus;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,24 +12,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public abstract class BaseRestController {
-
-    @Autowired
-    protected EntityManagerFactory entityManagerFactory;
-
-    @Bean
-    public SessionFactory getSessionFactory() {
-        if (entityManagerFactory.unwrap(SessionFactory.class) == null) {
-            throw new NullPointerException("factory is not a hibernate factory");
-        }
-        return entityManagerFactory.unwrap(SessionFactory.class);
-    }
-
 
     @ExceptionHandler({NumberFormatException.class, BadRequestException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)

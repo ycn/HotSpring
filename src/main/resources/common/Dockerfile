@@ -1,9 +1,9 @@
-# use minimal 8-jre
-FROM errordeveloper/oracle-jre
+# FROM errordeveloper/oracle-jre
+FROM 8-jre
 MAINTAINER Andy Yuan <andy@ycn.cc>
 
 ADD ${name}/lib/ /${name}/lib/
 ADD ${name}/ /${name}/
-CMD ["-cp", "/${name}/", "org.springframework.boot.loader.JarLauncher", "--server.port=${server.port}"]
+CMD ["java", "-cp", "/${name}/", "org.springframework.boot.loader.JarLauncher", "--server.port=${server.port}"]
 
 EXPOSE ${server.port}

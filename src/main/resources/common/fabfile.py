@@ -91,7 +91,9 @@ def docker_run(container_id=None):
                                                                     APP_VERSION.lower(),
                                                                     "--add-host=docker_host:" + docker_host,
                                                                     "--ulimit nofile=65535:65535",
-                                                                    "-v /data/logs:/data/logs"), True)
+                                                                    "-v /data/logs:/data/logs",
+                                                                    "-v /etc/localtime:/etc/localtime:ro",
+                                                                    '-e "TZ=Asia/Shanghai"'), True)
 
         # keep rollback_id
         local("cp container container.rollback")
