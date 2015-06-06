@@ -1,5 +1,5 @@
 # FROM errordeveloper/oracle-jre
-FROM 8-jre
+FROM java:8-jre
 MAINTAINER Andy Yuan <andy@ycn.cc>
 
 ADD ${name}/lib/ /${name}/lib/
