@@ -8,6 +8,8 @@ import me.chanjar.weixin.mp.api.*;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutTextMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ import java.util.Map;
 @NoArgsConstructor
 @Service
 public class WeixinServiceImpl implements WeixinService {
+
+    private static final Logger log = LoggerFactory.getLogger(WeixinServiceImpl.class);
 
     private WxMpInMemoryConfigStorage wxMpConfigStorage;
     private WxMpService wxMpService;
@@ -76,6 +80,7 @@ public class WeixinServiceImpl implements WeixinService {
     @Override
     public String routeMessage(String xmlInMessage) {
         WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(xmlInMessage);
+        log.info("got weixin message: {}", inMessage);
         WxMpXmlOutMessage outMessage = wxMpMessageRouter.route(inMessage);
         return outMessage.toXml();
     }
@@ -83,6 +88,7 @@ public class WeixinServiceImpl implements WeixinService {
     @Override
     public String routeEncryptedMessage(String xmlInMessage, String timestamp, String nonce, String msgSignature) {
         WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(xmlInMessage, wxMpConfigStorage, timestamp, nonce, msgSignature);
+        log.info("got weixin encrypted message: {}", inMessage);
         WxMpXmlOutMessage outMessage = wxMpMessageRouter.route(inMessage);
         return outMessage.toEncryptedXml(wxMpConfigStorage);
     }

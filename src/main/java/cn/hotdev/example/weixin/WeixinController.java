@@ -45,7 +45,7 @@ public class WeixinController {
         }
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/xml;charset=UTF-8", produces = "application/xml;charset=UTF-8")
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/xml;charset=UTF-8")
     public String onMessage(@RequestParam(value = "signature", required = true) String signature,
                             @RequestParam(value = "timestamp", required = true) String timestamp,
                             @RequestParam(value = "nonce", required = true) String nonce,
@@ -54,7 +54,7 @@ public class WeixinController {
                             @RequestBody(required = true) String xmlInMessage) {
         if (weixinService.checkSignature(signature, timestamp, nonce)) {
 
-            String outMessage = "";
+            String outMessage;
 
             if ("raw".equalsIgnoreCase(encryptType)) {
 
