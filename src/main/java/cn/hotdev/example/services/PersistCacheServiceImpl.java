@@ -43,4 +43,5 @@ public class PersistCacheServiceImpl implements CacheService {
     public void invalid(String key) {
         cache.invalidate(key);
     }
+
 }

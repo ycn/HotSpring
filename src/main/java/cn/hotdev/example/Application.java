@@ -1,5 +1,9 @@
 package cn.hotdev.example;
 
+import cn.hotdev.example.models.cache.PersistObjectCache;
+import cn.hotdev.example.models.cache.TempObjectCache;
+import cn.hotdev.example.utils.RedisTool;
+import com.mashape.unirest.http.Unirest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -10,6 +14,9 @@ import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+
+import javax.annotation.PreDestroy;
+import java.io.IOException;
 
 
 @EnableCaching
@@ -36,5 +43,25 @@ public class Application extends SpringBootServletInitializer {
         cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
         cmfb.setShared(true);
         return cmfb;
+    }
+
+    @PreDestroy
+    public void destroy() {
+        // release all temp caches & temp cache redis client
+        TempObjectCache tempObjectCache = TempObjectCache.getInstance();
+        tempObjectCache.cleanUp();
+
+        // release all persist caches & persist cache redis client
+        PersistObjectCache persistObjectCache = PersistObjectCache.getInstance();
+        persistObjectCache.cleanUp();
+
+        // destroy redis client pool
+        RedisTool.destroy();
+
+        // Shutdown UniRest
+        try {
+            Unirest.shutdown();
+        } catch (IOException ignore) {
+        }
     }
 }

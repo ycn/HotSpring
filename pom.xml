@@ -6,7 +6,7 @@
 
     <groupId>cn.hotdev.example</groupId>
     <artifactId>HotSpring</artifactId>
-    <version>1.0.6.61752</version>
+    <version>1.0.6.71550</version>
     <name>HotSpring</name>
 
     <parent>
@@ -128,6 +128,44 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.9</version>
+        </dependency>
+        <!-- UniRest Support -->
+        <dependency>
+            <groupId>com.mashape.unirest</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>1.4.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.6</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-codec</groupId>
+                    <artifactId>commons-codec</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpasyncclient</artifactId>
+            <version>4.0.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpcore</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.3.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20140107</version>
         </dependency>
     </dependencies>
 

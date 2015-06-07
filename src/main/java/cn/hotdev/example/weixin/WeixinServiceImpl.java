@@ -2,19 +2,18 @@ package cn.hotdev.example.weixin;
 
 import cn.hotdev.example.services.ConfigService;
 import lombok.NoArgsConstructor;
-import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.common.session.WxSessionManager;
-import me.chanjar.weixin.mp.api.*;
+import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
+import me.chanjar.weixin.mp.api.WxMpMessageRouter;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.api.WxMpServiceImpl;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
-import me.chanjar.weixin.mp.bean.WxMpXmlOutTextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.Map;
 
 @NoArgsConstructor
 @Service
@@ -47,22 +46,18 @@ public class WeixinServiceImpl implements WeixinService {
         wxMpService = new WxMpServiceImpl();
         wxMpService.setWxMpConfigStorage(wxMpConfigStorage);
 
-        WxMpMessageHandler handler = new WxMpMessageHandler() {
-            @Override
-            public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
-                WxMpXmlOutTextMessage outTextMessage
-                        = WxMpXmlOutMessage.TEXT().content("测试加密消息").fromUser(wxMessage.getToUserName())
-                        .toUser(wxMessage.getFromUserName()).build();
-                return outTextMessage;
-            }
-        };
-
         wxMpMessageRouter = new WxMpMessageRouter(wxMpService);
         wxMpMessageRouter
+                /* test message */
                 .rule()
                 .async(false)
                 .content("哈哈") // 拦截内容为“哈哈”的消息
-                .handler(handler)
+                .handler(new WeixinTestMessageHandler())
+                .end()
+                /* message */
+                .rule()
+                .async(false)
+                .handler(new WeixinMessageHandler())
                 .end();
 
     }

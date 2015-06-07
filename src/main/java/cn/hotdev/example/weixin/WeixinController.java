@@ -2,6 +2,7 @@ package cn.hotdev.example.weixin;
 
 
 import cn.hotdev.example.models.exceptions.BadRequestException;
+import cn.hotdev.example.models.exceptions.WeixinException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,15 @@ public class WeixinController {
                        @RequestParam(value = "nonce", required = true) String nonce,
                        @RequestParam(value = "echostr", required = true) String echoStr) {
 
-        if (weixinService.checkSignature(signature, timestamp, nonce)) {
-            return plainTextMessage(echoStr);
-        } else {
-            return plainTextMessage("not from weixin server");
+        try {
+
+            if (weixinService.checkSignature(signature, timestamp, nonce)) {
+                return plainTextMessage(echoStr);
+            } else {
+                throw new WeixinException("not from weixin server");
+            }
+        } catch (Exception e) {
+            throw new WeixinException("weixin echo service error: {}", e.toString());
         }
     }
 
@@ -52,30 +58,36 @@ public class WeixinController {
                             @RequestParam(value = "encrypt_type", defaultValue = "raw", required = false) String encryptType,
                             @RequestParam(value = "msg_signature", required = false) String msgSignature,
                             @RequestBody(required = true) String xmlInMessage) {
-        if (weixinService.checkSignature(signature, timestamp, nonce)) {
 
-            String outMessage;
+        try {
 
-            if ("raw".equalsIgnoreCase(encryptType)) {
+            if (weixinService.checkSignature(signature, timestamp, nonce)) {
 
-                outMessage = weixinService.routeMessage(xmlInMessage);
+                String outMessage;
 
-            } else if ("aes".equalsIgnoreCase(encryptType)) {
+                if ("raw".equalsIgnoreCase(encryptType)) {
 
-                if (msgSignature == null || msgSignature.isEmpty()) {
-                    throw new BadRequestException("msg_signature is missing");
+                    outMessage = weixinService.routeMessage(xmlInMessage);
+
+                } else if ("aes".equalsIgnoreCase(encryptType)) {
+
+                    if (msgSignature == null || msgSignature.isEmpty()) {
+                        throw new BadRequestException("msg_signature is missing");
+                    }
+
+                    outMessage = weixinService.routeEncryptedMessage(xmlInMessage, timestamp, nonce, msgSignature);
+
+                } else {
+                    throw new WeixinException("encrypt_type not support");
                 }
 
-                outMessage = weixinService.routeEncryptedMessage(xmlInMessage, timestamp, nonce, msgSignature);
+                return outMessage;
 
             } else {
-                return plainTextMessage("encrypt_type not support");
+                throw new WeixinException("not from weixin server");
             }
-
-            return outMessage;
-
-        } else {
-            return plainTextMessage("not from weixin server");
+        } catch (Exception e) {
+            throw new WeixinException("weixin message service error: {}", e.toString());
         }
     }
 
@@ -87,7 +99,7 @@ public class WeixinController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public String otherException(Exception e) {
-        log.error("weixin controller got error: {}", e.getMessage());
+        log.error("weixin controller got error: {}", e.toString());
         return plainTextMessage("server error");
     }
 }

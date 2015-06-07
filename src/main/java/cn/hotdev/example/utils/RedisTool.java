@@ -164,4 +164,8 @@ public class RedisTool {
             client.close();
         }
     }
+
+    public static void destroy() {
+        pool.destroy();
+    }
 }
