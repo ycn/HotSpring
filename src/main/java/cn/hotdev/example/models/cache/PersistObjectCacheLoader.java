@@ -1,6 +1,6 @@
 package cn.hotdev.example.models.cache;
 
-import cn.hotdev.example.constants.ConfigOption;
+import cn.hotdev.example.constants.DefaultConfigOption;
 import cn.hotdev.example.utils.RedisTool;
 import cn.hotdev.example.utils.StaticConfig;
 import com.google.common.cache.CacheLoader;
@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class PersistObjectCacheLoader extends CacheLoader<String, String> {
     private static final StaticConfig config = StaticConfig.getInstance();
-    private static final ExecutorService executor = Executors.newFixedThreadPool(config.getInt(ConfigOption.cache_reObj_executorPoolSize));
+    private static final ExecutorService executor = Executors.newFixedThreadPool(config.getInt(DefaultConfigOption.cache_reObj_executorPoolSize));
 
     // redis 永久缓存DB
     private int redisDb;

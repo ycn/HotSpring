@@ -1,7 +1,7 @@
 package cn.hotdev.example.models.cache;
 
 
-import cn.hotdev.example.constants.ConfigOption;
+import cn.hotdev.example.constants.DefaultConfigOption;
 import cn.hotdev.example.utils.ObjectTool;
 import cn.hotdev.example.utils.RedisTool;
 import cn.hotdev.example.utils.StaticConfig;
@@ -23,9 +23,9 @@ public class TempObjectCache extends ObjectCache {
     private Cache<String, String> cache;
 
     // redis 临时缓存DB
-    private static final int redisDb = config.getInt(ConfigOption.cache_obj_redis_db);
+    private static final int redisDb = config.getInt(DefaultConfigOption.cache_obj_redis_db);
     // redis 临时缓存过期时间(秒)
-    private static final int redisExpire = config.getInt(ConfigOption.cache_obj_redis_expiration);
+    private static final int redisExpire = config.getInt(DefaultConfigOption.cache_obj_redis_expiration);
     // redis client
     private RedisTool redisTool;
 
@@ -37,9 +37,9 @@ public class TempObjectCache extends ObjectCache {
 
     private TempObjectCache() {
         cache = CacheBuilder.newBuilder()
-                .concurrencyLevel(config.getInt(ConfigOption.cache_obj_concurrencyLevel))
-                .maximumSize(config.getInt(ConfigOption.cache_obj_size))
-                .expireAfterWrite(config.getInt(ConfigOption.cache_obj_expiration), TimeUnit.SECONDS)
+                .concurrencyLevel(config.getInt(DefaultConfigOption.cache_obj_concurrencyLevel))
+                .maximumSize(config.getInt(DefaultConfigOption.cache_obj_size))
+                .expireAfterWrite(config.getInt(DefaultConfigOption.cache_obj_expiration), TimeUnit.SECONDS)
                 .build();
 
         redisTool = new RedisTool("TempObjectCache");

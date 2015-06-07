@@ -1,6 +1,5 @@
 package cn.hotdev.example.models.address;
 
-import cn.hotdev.example.models.base.EntityBase;
 import cn.hotdev.example.models.customer.Customer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,7 +14,7 @@ import javax.persistence.*;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Address extends EntityBase {
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,6 +26,10 @@ public class Address extends EntityBase {
     private String addr;
     @Column(nullable = false)
     private String phone;
+    @Column(nullable = false)
+    protected long createdAt;
+    @Column(nullable = false)
+    protected long updatedAt;
 
     public void update(Address other) {
         if (other.addr != null)

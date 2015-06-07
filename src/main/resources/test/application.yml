@@ -16,3 +16,6 @@ spring:
 
 app:
   name: HotSpring
+  redis:
+    host: docker_host
+    port: 6379

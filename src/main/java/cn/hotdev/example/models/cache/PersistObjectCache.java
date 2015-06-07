@@ -1,7 +1,7 @@
 package cn.hotdev.example.models.cache;
 
 
-import cn.hotdev.example.constants.ConfigOption;
+import cn.hotdev.example.constants.DefaultConfigOption;
 import cn.hotdev.example.utils.RedisTool;
 import cn.hotdev.example.utils.StaticConfig;
 import com.google.common.cache.CacheBuilder;
@@ -25,7 +25,7 @@ public class PersistObjectCache extends ObjectCache {
     private LoadingCache<String, String> cache;
 
     // redis 永久缓存DB
-    private static final int redisDb = config.getInt(ConfigOption.cache_reObj_redis_db);
+    private static final int redisDb = config.getInt(DefaultConfigOption.cache_reObj_redis_db);
     // redis client
     private RedisTool redisTool;
 
@@ -40,10 +40,10 @@ public class PersistObjectCache extends ObjectCache {
         redisTool = new RedisTool("PersistObjectCache");
 
         cache = CacheBuilder.newBuilder()
-                .concurrencyLevel(config.getInt(ConfigOption.cache_reObj_concurrencyLevel))
-                .maximumSize(config.getInt(ConfigOption.cache_reObj_size))
-                .expireAfterAccess(config.getInt(ConfigOption.cache_reObj_expiration), TimeUnit.SECONDS)
-                .refreshAfterWrite(config.getInt(ConfigOption.cache_reObj_refresh), TimeUnit.SECONDS)
+                .concurrencyLevel(config.getInt(DefaultConfigOption.cache_reObj_concurrencyLevel))
+                .maximumSize(config.getInt(DefaultConfigOption.cache_reObj_size))
+                .expireAfterAccess(config.getInt(DefaultConfigOption.cache_reObj_expiration), TimeUnit.SECONDS)
+                .refreshAfterWrite(config.getInt(DefaultConfigOption.cache_reObj_refresh), TimeUnit.SECONDS)
                 .build(new PersistObjectCacheLoader(redisTool, redisDb));
     }
 

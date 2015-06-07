@@ -1,7 +1,6 @@
 package cn.hotdev.example.utils;
 
 
-import cn.hotdev.example.constants.ConfigOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,22 +85,22 @@ public class PropertiesFileTool {
         }
     }
 
-    public String option(ConfigOption option) {
-        if (option == null)
+    public String option(String name, String defaultValue) {
+        if (name == null || name.isEmpty())
             return "";
 
-        String property = properties.getProperty(option.name(), option.getDefaultValue());
+        String property = properties.getProperty(name, defaultValue);
         if (property == null)
             return "";
 
         return property;
     }
 
-    public int intOption(ConfigOption option) {
-        if (option == null)
+    public int intOption(String name, String defaultValue) {
+        if (name == null || name.isEmpty())
             return 0;
 
-        String property = properties.getProperty(option.name(), option.getDefaultValue());
+        String property = properties.getProperty(name, defaultValue);
         if (property == null)
             return 0;
 
@@ -109,17 +108,17 @@ public class PropertiesFileTool {
         try {
             v = Integer.parseInt(property);
         } catch (NumberFormatException e) {
-            log.error("property '{}' to int failed: {}", option.name(), property);
+            log.error("property '{}' to int failed: {}", name, property);
         }
 
         return v;
     }
 
-    public long longOption(ConfigOption option) {
-        if (option == null)
+    public long longOption(String name, String defaultValue) {
+        if (name == null || name.isEmpty())
             return 0;
 
-        String property = properties.getProperty(option.name(), option.getDefaultValue());
+        String property = properties.getProperty(name, defaultValue);
         if (property == null)
             return 0;
 
@@ -127,17 +126,17 @@ public class PropertiesFileTool {
         try {
             v = Integer.parseInt(property);
         } catch (NumberFormatException e) {
-            log.error("property '{}' to long failed: {}", option.name(), property);
+            log.error("property '{}' to long failed: {}", name, property);
         }
 
         return v;
     }
 
-    public double doubleOption(ConfigOption option) {
-        if (option == null)
+    public double doubleOption(String name, String defaultValue) {
+        if (name == null || name.isEmpty())
             return 0;
 
-        String property = properties.getProperty(option.name(), option.getDefaultValue());
+        String property = properties.getProperty(name, defaultValue);
         if (property == null)
             return 0;
 
@@ -145,17 +144,17 @@ public class PropertiesFileTool {
         try {
             v = Double.parseDouble(property);
         } catch (NumberFormatException e) {
-            log.error("property '{}' to double failed: {}", option.name(), property);
+            log.error("property '{}' to double failed: {}", name, property);
         }
 
         return v;
     }
 
-    public boolean boolOption(ConfigOption option) {
-        if (option == null)
+    public boolean boolOption(String name, String defaultValue) {
+        if (name == null || name.isEmpty())
             return false;
 
-        String property = properties.getProperty(option.name(), option.getDefaultValue());
+        String property = properties.getProperty(name, defaultValue);
         if (property == null)
             return false;
 

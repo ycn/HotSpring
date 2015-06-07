@@ -35,7 +35,7 @@ public class ConfigServiceImpl implements ConfigService {
         int result = 0;
         try {
             result = Integer.parseInt(value);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ignore) {
         }
         return result;
     }
@@ -48,7 +48,7 @@ public class ConfigServiceImpl implements ConfigService {
         long result = 0;
         try {
             result = Long.parseLong(value);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ignore) {
         }
         return result;
     }
@@ -61,7 +61,7 @@ public class ConfigServiceImpl implements ConfigService {
         double result = 0;
         try {
             result = Double.parseDouble(value);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ignore) {
         }
         return result;
     }
@@ -85,7 +85,7 @@ public class ConfigServiceImpl implements ConfigService {
         if (value != null) {
             try {
                 return ObjectTool.unserialize(value, type);
-            } catch (IOException e) {
+            } catch (IOException ignore) {
             }
         }
         return null;

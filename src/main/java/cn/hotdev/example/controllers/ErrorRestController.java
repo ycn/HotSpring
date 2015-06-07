@@ -1,7 +1,7 @@
 package cn.hotdev.example.controllers;
 
+import cn.hotdev.example.constants.DefaultRestStatus;
 import cn.hotdev.example.models.rest.RestResponse;
-import cn.hotdev.example.models.rest.RestStatus;
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ public class ErrorRestController implements ErrorController {
     @RequestMapping(value = PATH, method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public RestResponse home() {
-        return new RestResponse(RestStatus.NOT_FOUND, "Page Not Found");
+        return new RestResponse(DefaultRestStatus.NOT_FOUND, "Page Not Found");
     }
 
     @Override

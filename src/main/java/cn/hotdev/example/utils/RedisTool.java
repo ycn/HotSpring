@@ -1,7 +1,7 @@
 package cn.hotdev.example.utils;
 
 
-import cn.hotdev.example.constants.ConfigOption;
+import cn.hotdev.example.constants.DefaultConfigOption;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +20,8 @@ public class RedisTool {
     private static final JedisPool pool;
 
     static {
-        String redisHost = config.get(ConfigOption.global_redis_host);
-        int redisPort = config.getInt(ConfigOption.global_redis_port);
+        String redisHost = config.get(DefaultConfigOption.global_redis_host);
+        int redisPort = config.getInt(DefaultConfigOption.global_redis_port);
 
         pool = new JedisPool(
                 new JedisPoolConfig(),

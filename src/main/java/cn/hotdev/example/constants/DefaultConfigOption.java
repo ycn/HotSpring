@@ -1,7 +1,9 @@
 package cn.hotdev.example.constants;
 
 
-public enum ConfigOption {
+import cn.hotdev.example.models.enums.DefaultValueEnum;
+
+public enum DefaultConfigOption implements DefaultValueEnum {
 
     global_redis_host("localhost"),
     global_redis_port("6379"),
@@ -20,10 +22,16 @@ public enum ConfigOption {
 
     private String defaultValue;
 
-    private ConfigOption(String defaultValue) {
+    private DefaultConfigOption(String defaultValue) {
         this.defaultValue = defaultValue;
     }
 
+    @Override
+    public String getName() {
+        return name();
+    }
+
+    @Override
     public String getDefaultValue() {
         return defaultValue;
     }

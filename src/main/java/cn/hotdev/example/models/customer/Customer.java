@@ -1,7 +1,6 @@
 package cn.hotdev.example.models.customer;
 
 import cn.hotdev.example.models.address.Address;
-import cn.hotdev.example.models.base.EntityBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,7 +16,7 @@ import java.util.Set;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Customer extends EntityBase {
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,6 +31,10 @@ public class Customer extends EntityBase {
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Address> addresses = new LinkedHashSet<Address>();
+    @Column(nullable = false)
+    protected long createdAt;
+    @Column(nullable = false)
+    protected long updatedAt;
 
     public void update(Customer other) {
         if (other.firstName != null)

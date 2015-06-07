@@ -1,12 +1,12 @@
 package cn.hotdev.example.controllers;
 
-import cn.hotdev.example.constants.ConfigOption;
+import cn.hotdev.example.constants.DefaultConfigOption;
+import cn.hotdev.example.constants.DefaultRestStatus;
 import cn.hotdev.example.models.customer.Customer;
 import cn.hotdev.example.models.customer.CustomerRepository;
 import cn.hotdev.example.models.exceptions.BadRequestException;
 import cn.hotdev.example.models.hello.Hello;
 import cn.hotdev.example.models.rest.RestResponse;
-import cn.hotdev.example.models.rest.RestStatus;
 import cn.hotdev.example.services.ConfigService;
 import cn.hotdev.example.utils.StaticConfig;
 import org.slf4j.Logger;
@@ -67,7 +67,7 @@ public class HelloRestController extends BaseRestController {
             if (msg != null && !msg.isEmpty())
                 msg = "Who are U22222? this_app="
                         + appName
-                        + " or " + config.get(ConfigOption.app_name)
+                        + " or " + config.get(DefaultConfigOption.app_name)
                         + " or " + configService.getConfig("app_name", "ABC")
                         + " or " + configService.getConfig("hello_example", Hello.class);
         }
@@ -88,7 +88,7 @@ public class HelloRestController extends BaseRestController {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @Override
     public RestResponse badRequest(Exception e) {
-        return new RestResponse(RestStatus.BAD_REQUEST, e.getMessage());
+        return new RestResponse(DefaultRestStatus.BAD_REQUEST, e.getMessage());
     }
 
 }

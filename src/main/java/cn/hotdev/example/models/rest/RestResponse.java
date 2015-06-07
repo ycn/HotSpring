@@ -1,5 +1,7 @@
 package cn.hotdev.example.models.rest;
 
+import cn.hotdev.example.constants.DefaultRestStatus;
+import cn.hotdev.example.models.enums.StatusEnum;
 import cn.hotdev.example.utils.StringTool;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -15,23 +17,23 @@ public class RestResponse<T> {
     protected int status;
     protected String message;
     protected T data;
-    protected long createdTime = System.currentTimeMillis();
-    protected long updatedTime = System.currentTimeMillis();
+    protected long createdAt = System.currentTimeMillis();
+    protected long updatedAt = System.currentTimeMillis();
 
     public RestResponse() {
-        this(RestStatus.OK);
+        this(DefaultRestStatus.OK);
     }
 
-    public RestResponse(RestStatus status) {
+    public RestResponse(StatusEnum status) {
         this(status, status.getDefaultMessage());
     }
 
-    public RestResponse(RestStatus status, String message) {
-        this.status = status.getValue();
+    public RestResponse(StatusEnum status, String message) {
+        this.status = status.getStatus();
         this.message = (message == null) ? status.getDefaultMessage() : message;
     }
 
-    public RestResponse(RestStatus status, String format, Object... arguments) {
+    public RestResponse(StatusEnum status, String format, Object... arguments) {
         this(status, StringTool.formatString(format, arguments));
     }
 

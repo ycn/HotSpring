@@ -1,7 +1,7 @@
 package cn.hotdev.example.utils;
 
 
-import cn.hotdev.example.constants.ConfigOption;
+import cn.hotdev.example.models.enums.DefaultValueEnum;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -23,24 +23,24 @@ public class StaticConfig {
     }
 
 
-    public boolean getBool(ConfigOption option) {
-        return delegate.boolOption(option);
+    public boolean getBool(DefaultValueEnum option) {
+        return delegate.boolOption(option.getName(), option.getDefaultValue());
     }
 
-    public int getInt(ConfigOption option) {
-        return delegate.intOption(option);
+    public int getInt(DefaultValueEnum option) {
+        return delegate.intOption(option.getName(), option.getDefaultValue());
     }
 
-    public long getLong(ConfigOption option) {
-        return delegate.longOption(option);
+    public long getLong(DefaultValueEnum option) {
+        return delegate.longOption(option.getName(), option.getDefaultValue());
     }
 
-    public double getDouble(ConfigOption option) {
-        return delegate.doubleOption(option);
+    public double getDouble(DefaultValueEnum option) {
+        return delegate.doubleOption(option.getName(), option.getDefaultValue());
     }
 
-    public String get(ConfigOption option) {
-        return delegate.option(option);
+    public String get(DefaultValueEnum option) {
+        return delegate.option(option.getName(), option.getDefaultValue());
     }
 
 }
