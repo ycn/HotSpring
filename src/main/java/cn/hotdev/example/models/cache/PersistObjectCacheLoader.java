@@ -21,12 +21,13 @@ public class PersistObjectCacheLoader extends CacheLoader<String, String> {
     private static final ExecutorService executor = Executors.newFixedThreadPool(config.getInt(ConfigOption.cache_reObj_executorPoolSize));
 
     // redis 永久缓存DB
-    private static final int redisDb = config.getInt(ConfigOption.cache_reObj_redis_db);
+    private int redisDb;
     // redis client
     private RedisTool redisTool;
 
-    public PersistObjectCacheLoader() {
-        redisTool = new RedisTool("PersistObjectCache");
+    public PersistObjectCacheLoader(RedisTool redisTool, int redisDb) {
+        this.redisTool = redisTool;
+        this.redisDb = redisDb;
     }
 
     @Override

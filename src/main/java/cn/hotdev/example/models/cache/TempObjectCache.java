@@ -149,4 +149,9 @@ public class TempObjectCache extends ObjectCache {
     public void invalidate(String key) {
         cache.invalidate(key);
     }
+
+    public void cleanUp() {
+        cache.cleanUp();
+        redisTool.close();
+    }
 }

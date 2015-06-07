@@ -2,7 +2,7 @@ package cn.hotdev.example.weixin;
 
 
 import cn.hotdev.example.models.exceptions.BadRequestException;
-import cn.hotdev.example.models.exceptions.WeixinException;
+import cn.hotdev.example.models.exceptions.WeixinRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +44,10 @@ public class WeixinController {
             if (weixinService.checkSignature(signature, timestamp, nonce)) {
                 return plainTextMessage(echoStr);
             } else {
-                throw new WeixinException("not from weixin server");
+                throw new WeixinRuntimeException("not from weixin server");
             }
         } catch (Exception e) {
-            throw new WeixinException("weixin echo service error: {}", e.toString());
+            throw new WeixinRuntimeException("weixin echo service error: {}", e.toString());
         }
     }
 
@@ -78,16 +78,16 @@ public class WeixinController {
                     outMessage = weixinService.routeEncryptedMessage(xmlInMessage, timestamp, nonce, msgSignature);
 
                 } else {
-                    throw new WeixinException("encrypt_type not support");
+                    throw new WeixinRuntimeException("encrypt_type not support");
                 }
 
                 return outMessage;
 
             } else {
-                throw new WeixinException("not from weixin server");
+                throw new WeixinRuntimeException("not from weixin server");
             }
         } catch (Exception e) {
-            throw new WeixinException("weixin message service error: {}", e.toString());
+            throw new WeixinRuntimeException("weixin message service error: {}", e.toString());
         }
     }
 
