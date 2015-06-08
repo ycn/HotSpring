@@ -6,7 +6,7 @@
 
     <groupId>cn.hotdev.example</groupId>
     <artifactId>HotSpring</artifactId>
-    <version>1.0.6.81241</version>
+    <version>1.0.6.81243</version>
     <name>HotSpring</name>
 
     <parent>
@@ -47,7 +47,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
