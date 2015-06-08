@@ -2,9 +2,9 @@ package cn.hotdev.example.models.cache;
 
 
 import cn.hotdev.example.constants.DefaultConfigOption;
-import cn.hotdev.example.utils.ObjectTool;
-import cn.hotdev.example.utils.RedisTool;
-import cn.hotdev.example.utils.StaticConfig;
+import cn.hotdev.example.tools.ObjectTool;
+import cn.hotdev.example.tools.RedisTool;
+import cn.hotdev.example.tools.StaticConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

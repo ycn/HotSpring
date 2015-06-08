@@ -1,7 +1,7 @@
 package cn.hotdev.example.services;
 
 
-import cn.hotdev.example.utils.ObjectTool;
+import cn.hotdev.example.tools.ObjectTool;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

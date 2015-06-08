@@ -1,4 +1,4 @@
-package cn.hotdev.example.utils;
+package cn.hotdev.example.tools;
 
 
 import org.slf4j.Logger;

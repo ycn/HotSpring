@@ -1,7 +1,7 @@
 package cn.hotdev.example.models.exceptions;
 
 
-import cn.hotdev.example.utils.StringTool;
+import cn.hotdev.example.tools.StringTool;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

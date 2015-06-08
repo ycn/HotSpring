@@ -1,7 +1,7 @@
 package cn.hotdev.example.models.cache;
 
 
-import cn.hotdev.example.utils.ObjectTool;
+import cn.hotdev.example.tools.ObjectTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

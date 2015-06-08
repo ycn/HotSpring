@@ -2,7 +2,7 @@ package cn.hotdev.example.models.rest;
 
 import cn.hotdev.example.constants.DefaultRestStatus;
 import cn.hotdev.example.models.enums.StatusEnum;
-import cn.hotdev.example.utils.StringTool;
+import cn.hotdev.example.tools.StringTool;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

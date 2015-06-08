@@ -2,7 +2,7 @@ package cn.hotdev.example;
 
 import cn.hotdev.example.models.cache.PersistObjectCache;
 import cn.hotdev.example.models.cache.TempObjectCache;
-import cn.hotdev.example.utils.RedisTool;
+import cn.hotdev.example.tools.RedisTool;
 import com.mashape.unirest.http.Unirest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

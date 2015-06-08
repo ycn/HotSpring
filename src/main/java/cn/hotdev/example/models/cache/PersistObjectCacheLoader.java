@@ -1,8 +1,8 @@
 package cn.hotdev.example.models.cache;
 
 import cn.hotdev.example.constants.DefaultConfigOption;
-import cn.hotdev.example.utils.RedisTool;
-import cn.hotdev.example.utils.StaticConfig;
+import cn.hotdev.example.tools.RedisTool;
+import cn.hotdev.example.tools.StaticConfig;
 import com.google.common.cache.CacheLoader;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;

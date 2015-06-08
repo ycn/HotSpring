@@ -8,7 +8,7 @@ import cn.hotdev.example.models.exceptions.BadRequestException;
 import cn.hotdev.example.models.hello.Hello;
 import cn.hotdev.example.models.rest.RestResponse;
 import cn.hotdev.example.services.ConfigService;
-import cn.hotdev.example.utils.StaticConfig;
+import cn.hotdev.example.tools.StaticConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
