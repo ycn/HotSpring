@@ -54,7 +54,7 @@ public class WeixinServiceImpl implements WeixinService {
                 /* test message */
                 .rule().async(false).content("哈哈").handler(new WeixinTestMessageHandler()).end()
                 /* 美食送测试 */
-                .rule().content("美食送测试").handler(new MeishisongHandler()).end()
+                .rule().async(false).content("美食送测试").handler(new MeishisongHandler()).end()
                 /* message */
                 .rule().async(false).handler(new WeixinMessageHandler()).end();
 
