@@ -13,5 +13,9 @@ public class TempTest {
         String gen = SHA1.gen("9FnuptKrdhsRpHvRSwakkaAHVgAnpeYD", "1433576438", "396683500");
         System.out.println(gen);
         // 3dd9815df99b008c411701d875e5236d104cfa0a
+
+        int time = (int) (System.currentTimeMillis() / 1000);
+
+        System.out.println(time + "");
     }
 }

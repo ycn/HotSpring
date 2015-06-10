@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,11 +69,11 @@ public class MssServiceImpl implements MssService {
 
         // 创建模拟订单
 
-        int currentTime = (int) System.currentTimeMillis() / 1000;
+        int currentTime = (int) (System.currentTimeMillis() / 1000);
 
         mssCreate.setPartner_id(appId);
         mssCreate.setPush_time(currentTime + "");
-        mssCreate.setNotify_url(URLEncoder.encode("http://wx.hotdev.cn/mss_test/on_notify", "UTF-8"));
+        mssCreate.setNotify_url("http://wx.hotdev.cn/mss_test/on_notify");
 
 
         String sign = StringTool.md5("partner_id={}#partner_order_id={}#push_time={}#notify_url={}#key={}",
