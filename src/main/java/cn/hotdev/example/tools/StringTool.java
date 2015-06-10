@@ -1,12 +1,17 @@
 package cn.hotdev.example.tools;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class StringTool {
+
+    private static final Logger log = LoggerFactory.getLogger(StringTool.class);
 
     public static String formatString(String format, Object... arguments) {
         return String.format(format.replaceAll("\\{\\}", "%s"), arguments);
@@ -61,9 +66,13 @@ public class StringTool {
                 buf.append(Integer.toHexString(i));
             }
             //32位加密
-            return buf.toString();
+            String result = buf.toString();
             // 16位的加密
-            //return buf.toString().substring(8, 24);
+            //result = buf.toString().substring(8, 24);
+
+            log.info("md5({})={}", value, result);
+
+            return result;
         } catch (NoSuchAlgorithmException e) {
             return null;
         } catch (UnsupportedEncodingException e) {
