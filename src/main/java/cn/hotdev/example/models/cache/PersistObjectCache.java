@@ -2,15 +2,18 @@ package cn.hotdev.example.models.cache;
 
 
 import cn.hotdev.example.constants.DefaultConfigOption;
+import cn.hotdev.example.tools.ObjectTool;
 import cn.hotdev.example.tools.RedisTool;
 import cn.hotdev.example.tools.StaticConfig;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ExecutionError;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class PersistObjectCache extends ObjectCache {
+public class PersistObjectCache implements ObjectCache {
     private static final AtomicReference<PersistObjectCache> instance = new AtomicReference<PersistObjectCache>();
     private static final Logger log = LoggerFactory.getLogger(PersistObjectCache.class);
     private static final StaticConfig config = StaticConfig.getInstance();
@@ -47,8 +50,14 @@ public class PersistObjectCache extends ObjectCache {
                 .build(new PersistObjectCacheLoader(redisTool, redisDb));
     }
 
+    @Override
     public Set<String> keys() {
         return cache.asMap().keySet();
+    }
+
+    @Override
+    public long count() {
+        return cache.size();
     }
 
     @Override
@@ -57,14 +66,33 @@ public class PersistObjectCache extends ObjectCache {
     }
 
     public String get(String key) {
-
         if (key == null || key.isEmpty())
-            return null;
+            return "";
 
         try {
             return cache.getUnchecked(key);
         } catch (UncheckedExecutionException e) {
             log.warn("unchecked exception: key={}, db={}, err={}", key, redisDb, e.getMessage());
+        }
+
+        return "";
+    }
+
+    @Override
+    public <T> T get(String key, Class<T> type) {
+
+        String value = get(key);
+
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+
+        try {
+
+            return ObjectTool.unserialize(value, type);
+
+        } catch (IOException e) {
+            log.warn("object unserialize exception: key={}, db={}, err={}", key, redisDb, e.getMessage());
         }
 
         return null;
@@ -78,15 +106,47 @@ public class PersistObjectCache extends ObjectCache {
         }
 
         try {
-            map = cache.getAll(keys);
+
+            ImmutableMap<String, String> allPresent = cache.getAll(keys);
+
+            if (allPresent != null && !allPresent.isEmpty()) {
+                for (String key : allPresent.keySet()) {
+
+                    String value = allPresent.get(key);
+
+                    if (value != null && !value.isEmpty()) {
+                        map.put(key, value);
+                    }
+                }
+            }
+
         } catch (ExecutionException | UncheckedExecutionException | ExecutionError e) {
             log.warn("unchecked exception: keys={}, db={}, err={}", keys, redisDb, e.getMessage());
         }
 
-        // fill absent objects
-        if (map.isEmpty()) {
-            for (String key : keys) {
-                map.put(key, "");
+        return map;
+    }
+
+    @Override
+    public <T> Map<String, T> getAll(Iterable<? extends String> keys, Class<T> type) {
+        Map<String, String> allPresent = getAll(keys);
+        Map<String, T> map = new HashMap<String, T>();
+
+        if (allPresent == null || allPresent.isEmpty())
+            return map;
+
+        for (String key : allPresent.keySet()) {
+            String value = allPresent.get(key);
+
+            if (value != null && !value.isEmpty()) {
+
+                try {
+                    T t = ObjectTool.unserialize(value, type);
+                    map.put(key, t);
+                } catch (IOException e) {
+                    log.warn("object unserialize exception: key={}, db={}, err={}", key, redisDb, e.getMessage());
+                }
+
             }
         }
 

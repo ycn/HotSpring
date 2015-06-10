@@ -1,4 +1,4 @@
-package cn.hotdev.example.weixin;
+package cn.hotdev.example.weixin.handlers;
 
 import lombok.NoArgsConstructor;
 import me.chanjar.weixin.common.exception.WxErrorException;

@@ -17,7 +17,7 @@ public class TempCacheServiceImpl implements CacheService {
 
     @Override
     public String get(String key) {
-        return cache.get(key);
+        return cache.get(key, String.class);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class TempCacheServiceImpl implements CacheService {
 
     @Override
     public Map<String, String> getAll(Iterable<? extends String> keys) {
-        return cache.getAll(keys);
+        return cache.getAll(keys, String.class);
     }
 
     @Override

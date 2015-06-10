@@ -1,6 +1,9 @@
 package cn.hotdev.example.tools;
 
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class StringTool {
@@ -37,5 +40,34 @@ public class StringTool {
             builder.append(origin);
         }
         return builder.toString();
+    }
+
+    public static String md5(String format, Object... arguments) {
+
+        String value = formatString(format, arguments);
+
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(value.getBytes("UTF-8"));
+            byte b[] = md.digest();
+
+            StringBuilder buf = new StringBuilder();
+            for (byte aB : b) {
+                int i = aB;
+                if (i < 0)
+                    i += 256;
+                if (i < 16)
+                    buf.append("0");
+                buf.append(Integer.toHexString(i));
+            }
+            //32位加密
+            return buf.toString();
+            // 16位的加密
+            //return buf.toString().substring(8, 24);
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
     }
 }

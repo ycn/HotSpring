@@ -62,7 +62,7 @@ public class PersistObjectCacheLoader extends CacheLoader<String, String> {
         String value = redisTool.use(redisDb).get(key);
 
         if (value == null || value.isEmpty()) {
-            value = oldValue;
+            return oldValue;
         }
 
         return value;

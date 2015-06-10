@@ -1,6 +1,9 @@
 package cn.hotdev.example.weixin;
 
 import cn.hotdev.example.services.ConfigService;
+import cn.hotdev.example.weixin.handlers.MeishisongHandler;
+import cn.hotdev.example.weixin.handlers.WeixinMessageHandler;
+import cn.hotdev.example.weixin.handlers.WeixinTestMessageHandler;
 import lombok.NoArgsConstructor;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
@@ -49,16 +52,11 @@ public class WeixinServiceImpl implements WeixinService {
         wxMpMessageRouter = new WxMpMessageRouter(wxMpService);
         wxMpMessageRouter
                 /* test message */
-                .rule()
-                .async(false)
-                .content("哈哈") // 拦截内容为“哈哈”的消息
-                .handler(new WeixinTestMessageHandler())
-                .end()
+                .rule().async(false).content("哈哈").handler(new WeixinTestMessageHandler()).end()
+                /* 美食送测试 */
+                .rule().content("美食送测试").handler(new MeishisongHandler()).end()
                 /* message */
-                .rule()
-                .async(false)
-                .handler(new WeixinMessageHandler())
-                .end();
+                .rule().async(false).handler(new WeixinMessageHandler()).end();
 
     }
 
@@ -77,7 +75,7 @@ public class WeixinServiceImpl implements WeixinService {
         WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(xmlInMessage);
         log.info("got weixin message: {}", inMessage);
         WxMpXmlOutMessage outMessage = wxMpMessageRouter.route(inMessage);
-        return outMessage.toXml();
+        return outMessage == null ? "" : outMessage.toXml();
     }
 
     @Override
@@ -85,6 +83,6 @@ public class WeixinServiceImpl implements WeixinService {
         WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(xmlInMessage, wxMpConfigStorage, timestamp, nonce, msgSignature);
         log.info("got weixin encrypted message: {}", inMessage);
         WxMpXmlOutMessage outMessage = wxMpMessageRouter.route(inMessage);
-        return outMessage.toEncryptedXml(wxMpConfigStorage);
+        return outMessage == null ? "" : outMessage.toEncryptedXml(wxMpConfigStorage);
     }
 }

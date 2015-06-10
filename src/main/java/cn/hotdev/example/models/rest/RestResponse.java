@@ -17,8 +17,8 @@ public class RestResponse<T> {
     protected int status;
     protected String message;
     protected T data;
-    protected long createdAt = System.currentTimeMillis();
-    protected long updatedAt = System.currentTimeMillis();
+    protected long createdAt = System.currentTimeMillis() / 1000;
+    protected long updatedAt = System.currentTimeMillis() / 1000;
 
     public RestResponse() {
         this(DefaultRestStatus.OK);
