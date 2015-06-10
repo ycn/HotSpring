@@ -21,7 +21,7 @@ public class MeishisongHandler implements WxMpMessageHandler {
         item.setDescription("美食送测试");
         item.setPicUrl("http://placehold.it/350x150");
         item.setTitle("美食送测试");
-        item.setUrl("http://www.hotdev.cn/mss.test.html");
+        item.setUrl("http://www.hotdev.cn/mss.test.html?" + System.currentTimeMillis());
 
         WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS()
                 .fromUser(wxMessage.getToUserName())

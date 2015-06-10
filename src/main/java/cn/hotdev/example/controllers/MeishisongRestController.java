@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Created by andy on 6/10/15.
  */
@@ -21,12 +24,18 @@ public class MeishisongRestController extends BaseRestController {
 
     private static final String STATE_REF = "信息处理状态：-1，订单参数缺失 ；-2，用户信息缺失；-3，菜品信息缺失；-4，店铺信息缺失；-5，店铺未开业；-6，非法联系方式；-7，店铺信息处理失败；-8，用户信息处理失败；-9，用户地址保存失败；-10，创建菜品《XXX》的分类有误；-11，创建菜品《XXX》有误；-12，菜品《XXX》价格低于美食送价格；1，订单生成成功；-20，订单生成失败";
 
+    private final HttpServletRequest request;
+    private final HttpServletResponse response;
     private final MssCreateValidator mssCreateValidator;
     private final MssService mssService;
 
     @Autowired
-    public MeishisongRestController(MssCreateValidator mssCreateValidator,
+    public MeishisongRestController(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    MssCreateValidator mssCreateValidator,
                                     MssService mssService) {
+        this.request = request;
+        this.response = response;
         this.mssCreateValidator = mssCreateValidator;
         this.mssService = mssService;
     }
@@ -39,9 +48,9 @@ public class MeishisongRestController extends BaseRestController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public MssResponse create(@RequestBody MssCreate mssCreate) throws Exception {
 
-        MssResponse response = mssService.create(mssCreate);
+        response.addHeader("Access-Control-Allow-Origin", "*");
 
-        return response;
+        return mssService.create(mssCreate);
 
     }
 
