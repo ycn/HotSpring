@@ -98,6 +98,7 @@ public class MssServiceImpl implements MssService {
         mssCreate.setShipping_name("及时送达");
         mssCreate.setOrder_placed("true");
         mssCreate.setOrder_plat("false");
+        mssCreate.setInvoice("北京快好味");
 
         mssCreate.setCustom_info(getCustomInfo(mssCreate));
         mssCreate.setOrder_items(getOrderItems(mssCreate));

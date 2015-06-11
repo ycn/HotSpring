@@ -22,7 +22,7 @@ public class MssCreate {
     private String notify_url; //状态回调接口，必填，用于接收订单处理结果
     private String sign; //签名，必填
 
-    private String invoice; //发票抬头，选填
+    private String invoice; //顾客需要开的发票抬头，选填
     private String total_price; //订单总价，必填
     private String add_time; //下单时间 ，必填，格式同push_time
     private String request_time; //要求送达时间，选填，若不填，值为add_time+50分钟
@@ -88,7 +88,7 @@ public class MssCreate {
 
         private String goods_id; //商品ID，必填
         private String goods_name; //商品名称	，必填
-        private String price; //商品价格，必填
+        private String price; //商品单价，必填
         private String quantity; //商品数量，必填
         private String specification; //商品规格，必填
         private String goods_remark; //商品备注，选填
