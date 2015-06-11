@@ -129,7 +129,8 @@ public class MssServiceImpl implements MssService {
 
         mssStoreInfo.setSeller_id("KHW-S-001");
         mssStoreInfo.setSeller_name("金百万马甸店");
-        mssStoreInfo.setTel("85151234");
+        mssStoreInfo.setTel("4006662000");
+        mssStoreInfo.setAddress("北京市朝阳区裕民路3号(近北辰路) 金百万马甸店");
 
         return mssStoreInfo;
     }
