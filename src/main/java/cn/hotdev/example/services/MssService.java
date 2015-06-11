@@ -1,6 +1,7 @@
 package cn.hotdev.example.services;
 
 import cn.hotdev.example.models.mss.MssCreate;
+import cn.hotdev.example.models.mss.MssOrder;
 import cn.hotdev.example.models.mss.MssResponse;
 import org.springframework.stereotype.Service;
 
@@ -13,4 +14,6 @@ public interface MssService {
     public MssResponse support(double lng, double lat) throws Exception;
 
     public MssResponse create(MssCreate mssCreate) throws Exception;
+
+    public MssResponse cancel(MssOrder mssOrder) throws Exception;
 }

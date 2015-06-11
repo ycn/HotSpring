@@ -1,6 +1,7 @@
 package cn.hotdev.example.services;
 
 import cn.hotdev.example.models.mss.MssCreate;
+import cn.hotdev.example.models.mss.MssOrder;
 import cn.hotdev.example.models.mss.MssResponse;
 import cn.hotdev.example.tools.ObjectTool;
 import cn.hotdev.example.tools.StringTool;
@@ -99,7 +100,6 @@ public class MssServiceImpl implements MssService {
         mssCreate.setOrder_plat("false");
 
         mssCreate.setCustom_info(getCustomInfo(mssCreate));
-        mssCreate.setStore_info(getStoreInfo(mssCreate));
         mssCreate.setOrder_items(getOrderItems(mssCreate));
 
         String value = ObjectTool.serialize(mssCreate);
@@ -107,6 +107,41 @@ public class MssServiceImpl implements MssService {
 
         // 发送请求
         HttpResponse<JsonNode> json = Unirest.post(entry + "order/addRecord")
+                .body(value)
+                .asJson();
+
+        MssResponse response = getObject(json, MssResponse.class);
+
+        return response;
+    }
+
+    @Override
+    public MssResponse cancel(MssOrder mssOrder) throws Exception {
+        String entry = configService.getConfig("mss_url");
+        String appId = configService.getConfig("mss_app_id");
+        String appKey = configService.getConfig("mss_app_key");
+
+        int currentTime = (int) (System.currentTimeMillis() / 1000);
+
+        mssOrder.setPartner_id(appId);
+        mssOrder.setPush_time(currentTime + "");
+        mssOrder.setNotify_url("http://wx.hotdev.cn/mss_test/on_notify");
+
+
+        String sign = StringTool.md5("partner_id={}#partner_order_id={}#push_time={}#notify_url={}#key={}",
+                mssOrder.getPartner_id(),
+                mssOrder.getPartner_order_id(),
+                mssOrder.getPush_time(),
+                mssOrder.getNotify_url(),
+                appKey);
+
+        mssOrder.setSign(sign);
+
+        String value = ObjectTool.serialize(mssOrder);
+        log.info("sent to mss: (cancel) {}", value);
+
+        // 发送请求
+        HttpResponse<JsonNode> json = Unirest.post(entry + "order/cancel")
                 .body(value)
                 .asJson();
 
@@ -140,6 +175,9 @@ public class MssServiceImpl implements MssService {
 
     private MssCreate.MssOrderItems getOrderItems(MssCreate mssCreate) {
         MssCreate.MssOrderItems mssOrderItems = mssCreate.new MssOrderItems();
+
+        mssOrderItems.setStore_info(getStoreInfo(mssCreate));
+
         List<MssCreate.MssOrderGood> list = new ArrayList<MssCreate.MssOrderGood>();
 
         MssCreate.MssOrderGood good1 = mssCreate.new MssOrderGood();

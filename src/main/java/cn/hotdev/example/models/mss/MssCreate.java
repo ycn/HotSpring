@@ -38,7 +38,6 @@ public class MssCreate {
     private String order_plat; //是否是导流订单，string格式的true/false，true代表是导流订单，false表示是自营订单 必填
 
     private MssCustomInfo custom_info;
-    private MssStoreInfo store_info;
     private MssOrderItems order_items;
 
 
@@ -78,6 +77,7 @@ public class MssCreate {
     public class MssOrderItems {
 
         private List<MssOrderGood> order_goods;
+        private MssStoreInfo store_info;
     }
 
     @EqualsAndHashCode(callSuper = false)

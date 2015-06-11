@@ -1,9 +1,6 @@
 package cn.hotdev.example.controllers;
 
-import cn.hotdev.example.models.mss.MssAck;
-import cn.hotdev.example.models.mss.MssCreate;
-import cn.hotdev.example.models.mss.MssCreateValidator;
-import cn.hotdev.example.models.mss.MssResponse;
+import cn.hotdev.example.models.mss.*;
 import cn.hotdev.example.services.MssService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +48,15 @@ public class MeishisongRestController extends BaseRestController {
         response.addHeader("Access-Control-Allow-Origin", "*");
 
         return mssService.create(mssCreate);
+
+    }
+
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
+    public MssResponse cancel(@RequestBody MssOrder mssOrder) throws Exception {
+
+        response.addHeader("Access-Control-Allow-Origin", "*");
+
+        return mssService.cancel(mssOrder);
 
     }
 
