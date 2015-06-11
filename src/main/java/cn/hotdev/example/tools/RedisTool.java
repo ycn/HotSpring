@@ -42,7 +42,6 @@ public class RedisTool {
 
     public RedisTool(String id) {
         this.id = id;
-        reconnect();
     }
 
     public RedisTool use(int db) {
@@ -51,8 +50,7 @@ public class RedisTool {
     }
 
     public String get(String key) {
-        if (client == null)
-            reconnect();
+        reconnect();
 
         String value = null;
         if (client != null) {
@@ -75,8 +73,7 @@ public class RedisTool {
     }
 
     public Map<String, String> getAll(Iterable<? extends String> keys) {
-        if (client == null)
-            reconnect();
+        reconnect();
 
         Map<String, Response<String>> futureMap = new HashMap<String, Response<String>>();
         Map<String, String> map = new LinkedHashMap<String, String>();
@@ -114,8 +111,7 @@ public class RedisTool {
     }
 
     public RedisTool set(String key, String value, int seconds) {
-        if (client == null)
-            reconnect();
+        reconnect();
 
         if (client != null) {
 
