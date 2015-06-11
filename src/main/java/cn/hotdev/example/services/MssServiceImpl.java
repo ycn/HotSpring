@@ -102,9 +102,12 @@ public class MssServiceImpl implements MssService {
         mssCreate.setStore_info(getStoreInfo(mssCreate));
         mssCreate.setOrder_items(getOrderItems(mssCreate));
 
+        String value = ObjectTool.serialize(mssCreate);
+        log.info("sent to mss: (create) {}", value);
+
         // 发送请求
         HttpResponse<JsonNode> json = Unirest.post(entry + "order/addRecord")
-                .body(ObjectTool.serialize(mssCreate))
+                .body(value)
                 .asJson();
 
         MssResponse response = getObject(json, MssResponse.class);
@@ -151,14 +154,14 @@ public class MssServiceImpl implements MssService {
         list.add(good1);
 
         MssCreate.MssOrderGood good2 = mssCreate.new MssOrderGood();
-        good1.setGoods_id("KHW-G-002");
-        good1.setGoods_name("准成品-西红柿鸡蛋");
-        good1.setGoods_remark("测试订单");
-        good1.setPrice("12.0");
-        good1.setQuantity("1");
-        good1.setSpecification("spe");
-        good1.setDiscount("1.0");
-        good1.setPacking_fee("0");
+        good2.setGoods_id("KHW-G-002");
+        good2.setGoods_name("准成品-西红柿鸡蛋");
+        good2.setGoods_remark("测试订单");
+        good2.setPrice("12.0");
+        good2.setQuantity("1");
+        good2.setSpecification("spe");
+        good2.setDiscount("1.0");
+        good2.setPacking_fee("0");
         list.add(good2);
 
         mssOrderItems.setOrder_goods(list);
