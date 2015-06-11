@@ -111,11 +111,6 @@ public class MeishisongRestController extends BaseRestController {
                 log.info("[美食送] 订单已被分配");
                 break;
 
-            // 送餐员已取餐
-            case 6:
-                log.info("[美食送] 送餐员已取餐: emp_name={}, tel={}", empName, tel);
-                break;
-
             // 已送达
             case 3:
                 log.info("[美食送] 已送达: actual_receipt={}, actual_expend={}, rec_reason={}, exp_reason={}",
@@ -130,6 +125,16 @@ public class MeishisongRestController extends BaseRestController {
             // 异常（需要重新提交订单）
             case 5:
                 log.info("[美食送] 异常订单");
+                break;
+
+            // 送餐员已取餐
+            case 6:
+                log.info("[美食送] 送餐员已取餐: emp_name={}, tel={}", empName, tel);
+                break;
+
+            // 送餐员已取餐 (不能取消)
+            case 201:
+                log.info("[美食送] 送餐员已取餐 (不能取消)");
                 break;
 
             default:
