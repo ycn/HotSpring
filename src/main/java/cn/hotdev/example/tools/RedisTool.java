@@ -42,6 +42,7 @@ public class RedisTool {
 
     public RedisTool(String id) {
         this.id = id;
+        reconnect();
     }
 
     public RedisTool use(int db) {
@@ -137,6 +138,10 @@ public class RedisTool {
     }
 
     private void reconnect() {
+
+        // 必须redis-server设置为连接保持
+        if (client != null)
+            return;
 
         close();
 
