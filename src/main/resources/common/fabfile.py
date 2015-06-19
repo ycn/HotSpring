@@ -89,7 +89,7 @@ def docker_run(container_id=None):
         old_container_id = get_running()
 
         # 绑定随机端口
-        run_cmd = "docker run {4} {5} {6} {7} {8} -d -p 127.0.0.1::{0} {1}/{2}:{3}"
+        run_cmd = "docker run {4} {5} {6} {7} {8} -d -p 127.0.0.1:{0} {1}/{2}:{3}"
         container_id = local(run_cmd.format(APP_PORT,
                                             APP_NAME.lower(),
                                             HUB_NAME.lower(),
@@ -100,11 +100,13 @@ def docker_run(container_id=None):
                                             "-v /etc/localtime:/etc/localtime:ro",
                                             '-e "TZ=Asia/Shanghai"'), True)
 
-        # delay for app startup
-        time.sleep(STARTUP_DELAY)
+
 
         # update dyups (change nginx without reload)
         dyups_update(container_id)
+
+        # delay for app startup
+        time.sleep(STARTUP_DELAY)
 
         # stop then
         stop_running(old_container_id)
@@ -124,11 +126,7 @@ def docker_rollback():
 
         # start first
         if not start_container(rollback_id):
-            print "Can't start rollback container: " + rollback_id
             sys.exit(2)
-
-        # delay for app startup
-        time.sleep(STARTUP_DELAY)
 
         # update dyups (change nginx without reload)
         dyups_update(rollback_id)
@@ -142,7 +140,6 @@ def docker_rollback():
 
     else:
         print "Can't doing rollback, container.rollback file not found!"
-        sys.exit(3)
 
 
 def docker_cleanup():
