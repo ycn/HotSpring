@@ -69,9 +69,6 @@ public class StringTool {
             String result = buf.toString();
             // 16位的加密
             //result = buf.toString().substring(8, 24);
-
-            log.info("md5({})={}", value, result);
-
             return result;
         } catch (NoSuchAlgorithmException e) {
             return null;
