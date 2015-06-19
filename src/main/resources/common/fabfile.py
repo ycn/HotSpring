@@ -226,12 +226,7 @@ def dyups_update(container_id=None):
 
         if container_port:
             # update dyups upstream.conf case of nginx reload
-            upstream = """
-            upstream {0} {
-                keepalive 100;
-                server {1};
-            }
-            """
+            upstream = "upstream {0} {\nkeepalive 100;\nserver {1};\n}"
             upstream_content = upstream.format(DYUPS_HOST, container_port)
 
             try:
