@@ -11,6 +11,8 @@ HUB_NAME = "${group.name}"
 APP_NAME = "${name}"
 APP_VERSION = "${version}"
 APP_PORT = "${server.port}"
+HUB_HOST = "127.0.0.1:5000"
+
 DYUPS_CONF = "/data/dyups/upstream.conf"
 DYUPS_HOST = "wx.hotdev.cn"
 DYUPS_INTERFACE = "http://127.0.0.1:9999"
@@ -63,24 +65,45 @@ def docker_build():
     DOCKER_HOST = get_docker_host()
 
 
+# 发布latest版本到线上
+def docker_publish():
+    # latest image
+    latest_id = get_latest_image_id()
+    if not latest_id:
+        print "latest image not found! exit!"
+        sys.exit(5)
+
+    local("docker tag {0} {1}/{2}".format(latest_id, HUB_HOST, APP_NAME.lower()))
+    local("docker push {0}/{1}".format(HUB_HOST, APP_NAME.lower()))
+
+
 def docker_run(container_id=None):
     if FAILED:
         sys.exit(1)
 
-    if container_id:  # 运行历史实例
+    if container_id and not is_running(container_id):  # 运行历史实例
 
-        # already run?
-        exited_id = local("docker ps -a | grep {0} | grep 'Exited' | cut -d' ' -f 1".format(container_id), True)
-        exited_id = exited_id.strip()
+        old_container_id = get_running()
 
-        if exited_id and len(exited_id) > 0:
-            local("docker start {0}".format(exited_id))
+        # start first
+        if not start_container(container_id):
+            print "Can't start container: " + container_id
+            sys.exit(2)
 
-            # keep container_id
-            local("echo '{0}' > container".format(container_id[:12]))
+        # delay for app startup
+        time.sleep(STARTUP_DELAY)
 
-        else:
-            print "Can't run, container:{0} not found or not exited!".format(container_id)
+        # update dyups (change nginx without reload)
+        dyups_update(container_id)
+
+        # stop then
+        if old_container_id != container_id:
+            stop_running(old_container_id)
+
+        # keep rollback info
+        if old_container_id:
+            local("echo '{0}' > container.rollback".format(old_container_id[:12]))
+        local("echo '{0}' > container".format(container_id[:12]))
 
     else:  # 运行新实例
 
@@ -108,7 +131,8 @@ def docker_run(container_id=None):
             stop_running(old_container_id)
 
         # keep rollback info
-        local("echo '{0}' > container.rollback".format(old_container_id[:12]))
+        if old_container_id:
+            local("echo '{0}' > container.rollback".format(old_container_id[:12]))
         local("echo '{0}' > container".format(container_id[:12]))
 
 
@@ -136,7 +160,7 @@ def docker_rollback():
             stop_running(old_container_id)
 
         # clean rollback info
-        local("echo '{0}' > container".format(rollback_id))
+        local("echo '{0}' > container".format(rollback_id[:12]))
         local("rm -f container.rollback")
 
     else:
@@ -198,6 +222,12 @@ def get_running():
     running_id = local("docker ps -a | grep {0} | grep 'Up' | cut -d' ' -f 1 | head -n 1".format(APP_NAME.lower()), True)
     running_id = running_id.strip()
     return running_id
+
+
+def get_latest_image_id():
+    latest_id = local("docker images | grep {0} | grep 'latest' | awk -F' ' '{print $3}' | head -n 1".format(APP_NAME.lower(), True))
+    latest_id = latest_id.strip()
+    return latest_id
 
 
 def stop_running(container_id):
