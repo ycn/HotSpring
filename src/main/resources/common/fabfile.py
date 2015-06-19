@@ -11,13 +11,13 @@ HUB_NAME = "${group.name}"
 APP_NAME = "${name}"
 APP_VERSION = "${version}"
 APP_PORT = "${server.port}"
-HUB_HOST = "127.0.0.1:5000"
+HUB_HOST = "${docker.hub.host}"
 
-DYUPS_CONF = "/data/dyups/upstream.conf"
-DYUPS_HOST = "wx.hotdev.cn"
-DYUPS_INTERFACE = "http://127.0.0.1:9999"
+DYUPS_CONF = "${dyups.conf}"
+DYUPS_HOST = "${dyups.host}"
+DYUPS_INTERFACE = "${dyups.interface}"
 
-STARTUP_DELAY = 2
+STARTUP_DELAY = int("${app.startup.delay}")
 FAILED = False
 DOCKER_HOST = None
 
