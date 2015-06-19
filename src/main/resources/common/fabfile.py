@@ -65,16 +65,46 @@ def docker_build():
     DOCKER_HOST = get_docker_host()
 
 
-# 发布latest版本到线上
-def docker_publish():
-    # latest image
-    latest_id = get_latest_image_id()
-    if not latest_id:
+# 发布指定版本到线上
+def docker_publish(version):
+    # image
+    image_id = get_image_id(version)
+    if not image_id:
         print "latest image not found! exit!"
         sys.exit(5)
 
-    local("docker tag {0} {1}/{2}".format(latest_id, HUB_HOST, APP_NAME.lower()))
+    local("docker tag -f {0} {1}/{2}".format(image_id, HUB_HOST, APP_NAME.lower()))
     local("docker push {0}/{1}".format(HUB_HOST, APP_NAME.lower()))
+
+
+# 更新前置机到最新代码image
+def docker_update_worker():
+    # pull latest version
+    local("docker pull {0}/{1}".format(HUB_HOST, APP_NAME.lower()))
+
+    old_container_id = get_running()
+
+    # 绑定随机端口
+    run_cmd = "docker run {3} {4} {5} {6} {7} {8} -d -p 127.0.0.1::{0} {1}/{2}"
+    container_id = local(run_cmd.format(APP_PORT,
+                                        HUB_HOST,
+                                        APP_NAME.lower(),
+                                        "--add-host=docker_host:" + DOCKER_HOST,
+                                        "--ulimit nofile=65535:65535",
+                                        "-v /data/logs:/data/logs",
+                                        "-v /etc/localtime:/etc/localtime:ro",
+                                        '-e "TZ=Asia/Shanghai"',
+                                        "--ip-forward=true"), True)
+
+    # delay for app startup
+    time.sleep(STARTUP_DELAY)
+
+    # update dyups (change nginx without reload)
+    dyups_update(container_id)
+
+    # stop then
+    if old_container_id != container_id:
+        stop_running(old_container_id)
 
 
 def docker_run(container_id=None):
@@ -110,7 +140,7 @@ def docker_run(container_id=None):
         old_container_id = get_running()
 
         # 绑定随机端口
-        run_cmd = "docker run {3} {4} {5} {6} {7} -d -p 127.0.0.1::{0} {1}:{2}"
+        run_cmd = "docker run {3} {4} {5} {6} {7} {8} -d -p 127.0.0.1::{0} {1}:{2}"
         container_id = local(run_cmd.format(APP_PORT,
                                             APP_NAME.lower(),
                                             APP_VERSION.lower(),
@@ -118,7 +148,8 @@ def docker_run(container_id=None):
                                             "--ulimit nofile=65535:65535",
                                             "-v /data/logs:/data/logs",
                                             "-v /etc/localtime:/etc/localtime:ro",
-                                            '-e "TZ=Asia/Shanghai"'), True)
+                                            '-e "TZ=Asia/Shanghai"',
+                                            "--ip-forward=true"), True)
 
         # delay for app startup
         time.sleep(STARTUP_DELAY)
@@ -224,10 +255,18 @@ def get_running():
     return running_id
 
 
-def get_latest_image_id():
-    latest_id = local("docker images | grep " + APP_NAME.lower() + " | grep -v '5000' | grep 'latest' | awk -F' ' '{print $3}' | head -n 1", True)
-    latest_id = latest_id.strip()
-    return latest_id
+def get_image_id(version):
+    if not version:
+        print "must specify app version for publish! 'latest' is OK."
+        sys.exit(6)
+
+    image_id = local("docker images | grep "
+                      + APP_NAME.lower()
+                      + " | grep -v '5000' | grep "
+                      + version
+                      + " | awk -F' ' '{print $3}' | head -n 1", True)
+    image_id = image_id.strip()
+    return image_id
 
 
 def stop_running(container_id):
