@@ -91,16 +91,14 @@ def docker_run(container_id=None):
         # 绑定随机端口
         run_cmd = "docker run {4} {5} {6} {7} {8} -d -p 127.0.0.1:{0} {1}/{2}:{3}"
         container_id = local(run_cmd.format(APP_PORT,
-                                            APP_NAME.lower(),
                                             HUB_NAME.lower(),
+                                            APP_NAME.lower(),
                                             APP_VERSION.lower(),
                                             "--add-host=docker_host:" + DOCKER_HOST,
                                             "--ulimit nofile=65535:65535",
                                             "-v /data/logs:/data/logs",
                                             "-v /etc/localtime:/etc/localtime:ro",
                                             '-e "TZ=Asia/Shanghai"'), True)
-
-
 
         # update dyups (change nginx without reload)
         dyups_update(container_id)
@@ -168,7 +166,7 @@ def is_running(container_id=None):
 
     # 判断指定container是否在运行态
     if container_id:
-        up_id = local("docker ps -a | grep {0} | grep 'Up' | cut -d' ' -f 1".format(container_id[:12]), True)
+        up_id = local("docker ps -a | grep {0} | grep 'Up' | cut -d' ' -f 1 | head -n 1".format(container_id[:12]), True)
         up_id = up_id.strip()
 
         if up_id and len(up_id) > 0:
@@ -193,7 +191,7 @@ def get_port(container_id=None):
 
 
 def get_running():
-    running_id = local("docker ps -a | grep {0} | grep 'Up' | cut -d' ' -f 1".format(APP_NAME.lower()), True)
+    running_id = local("docker ps -a | grep {0} | grep 'Up' | cut -d' ' -f 1 | head -n 1".format(APP_NAME.lower()), True)
     running_id = running_id.strip()
     return running_id
 
