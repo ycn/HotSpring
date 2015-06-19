@@ -225,7 +225,7 @@ def get_running():
 
 
 def get_latest_image_id():
-    latest_id = local("docker images | grep {0} | grep 'latest' | awk -F' ' '{print $3}' | head -n 1".format(APP_NAME.lower(), True))
+    latest_id = local("docker images | grep " + APP_NAME.lower() + " | grep -v '5000' | grep 'latest' | awk -F' ' '{print $3}' | head -n 1", True)
     latest_id = latest_id.strip()
     return latest_id
 
