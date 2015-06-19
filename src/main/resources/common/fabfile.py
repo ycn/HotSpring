@@ -104,7 +104,8 @@ def docker_run(container_id=None):
         dyups_update(container_id)
 
         # stop then
-        stop_running(old_container_id)
+        if old_container_id != container_id:
+            stop_running(old_container_id)
 
         # keep rollback info
         local("echo '{0}' > container.rollback".format(old_container_id[:12]))
@@ -131,7 +132,8 @@ def docker_rollback():
         dyups_update(rollback_id)
 
         # stop then
-        stop_running(old_container_id)
+        if old_container_id != rollback_id:
+            stop_running(old_container_id)
 
         # clean rollback info
         local("echo '{0}' > container".format(rollback_id))
@@ -198,10 +200,7 @@ def get_running():
     return running_id
 
 
-def stop_running(container_id=None):
-    if not container_id:
-        container_id = get_running()
-
+def stop_running(container_id):
     if container_id and is_running(container_id):
         local("docker stop {0}".format(container_id[:12]))
         return True
@@ -226,7 +225,7 @@ def dyups_update(container_id=None):
 
         if container_port:
             # update dyups upstream.conf case of nginx reload
-            upstream = "upstream " + DYUPS_HOST + "{\nkeepalive 100;\nserver " + container_port + ";\n}"
+            upstream = "upstream " + DYUPS_HOST + "{\nkeepalive 100;\nserver " + container_port + ";\n}\n"
 
             try:
                 f = open(DYUPS_CONF, "w")
