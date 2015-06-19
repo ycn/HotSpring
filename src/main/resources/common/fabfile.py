@@ -55,12 +55,10 @@ def docker_build():
         # cp version
         local("cp ../version ./{0}/".format(APP_NAME))
         # build
-        local("docker build -t {0}/{1} .".format(APP_NAME.lower(),
-                                                 HUB_NAME.lower()))
+        local("docker build -t {0} .".format(APP_NAME.lower()))
 
-        local("docker tag {0}/{1}:latest {0}/{1}:{2}".format(APP_NAME.lower(),
-                                                             HUB_NAME.lower(),
-                                                             APP_VERSION.lower()))
+        local("docker tag {0}:latest {0}:{1}".format(APP_NAME.lower(),
+                                                     APP_VERSION.lower()))
 
     DOCKER_HOST = get_docker_host()
 
@@ -89,9 +87,8 @@ def docker_run(container_id=None):
         old_container_id = get_running()
 
         # 绑定随机端口
-        run_cmd = "docker run {4} {5} {6} {7} {8} -d -p 127.0.0.1::{0} {1}/{2}:{3}"
+        run_cmd = "docker run {3} {4} {5} {6} {7} -d -p 127.0.0.1::{0} {1}:{2}"
         container_id = local(run_cmd.format(APP_PORT,
-                                            HUB_NAME.lower(),
                                             APP_NAME.lower(),
                                             APP_VERSION.lower(),
                                             "--add-host=docker_host:" + DOCKER_HOST,
