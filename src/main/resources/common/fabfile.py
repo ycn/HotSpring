@@ -15,7 +15,7 @@ DYUPS_CONF = "/data/dyups/upstream.conf"
 DYUPS_HOST = "wx.hotdev.cn"
 DYUPS_INTERFACE = "http://127.0.0.1:9999"
 
-STARTUP_DELAY = 20
+STARTUP_DELAY = 2
 FAILED = False
 DOCKER_HOST = None
 
@@ -89,7 +89,7 @@ def docker_run(container_id=None):
         old_container_id = get_running()
 
         # 绑定随机端口
-        run_cmd = "docker run {4} {5} {6} {7} {8} -d -p 127.0.0.1:{0} {1}/{2}:{3}"
+        run_cmd = "docker run {4} {5} {6} {7} {8} -d -p 127.0.0.1::{0} {1}/{2}:{3}"
         container_id = local(run_cmd.format(APP_PORT,
                                             HUB_NAME.lower(),
                                             APP_NAME.lower(),
@@ -100,11 +100,11 @@ def docker_run(container_id=None):
                                             "-v /etc/localtime:/etc/localtime:ro",
                                             '-e "TZ=Asia/Shanghai"'), True)
 
-        # update dyups (change nginx without reload)
-        dyups_update(container_id)
-
         # delay for app startup
         time.sleep(STARTUP_DELAY)
+
+        # update dyups (change nginx without reload)
+        dyups_update(container_id)
 
         # stop then
         stop_running(old_container_id)
@@ -124,7 +124,11 @@ def docker_rollback():
 
         # start first
         if not start_container(rollback_id):
+            print "Can't start rollback container: " + rollback_id
             sys.exit(2)
+
+        # delay for app startup
+        time.sleep(STARTUP_DELAY)
 
         # update dyups (change nginx without reload)
         dyups_update(rollback_id)
@@ -138,6 +142,7 @@ def docker_rollback():
 
     else:
         print "Can't doing rollback, container.rollback file not found!"
+        sys.exit(3)
 
 
 def docker_cleanup():
@@ -224,14 +229,22 @@ def dyups_update(container_id=None):
 
         if container_port:
             # update dyups upstream.conf case of nginx reload
-            upstream_content = """
+            upstream = """
             upstream {0} {
                 keepalive 100;
                 server {1};
             }
-            """.format(DYUPS_HOST, container_port)
+            """
+            upstream_content = upstream.format(DYUPS_HOST, container_port)
 
-            local("echo '{0}' > {1}".format(upstream_content, DYUPS_CONF))
+            try:
+                f = open(DYUPS_CONF, "w")
+                f.write(upstream_content)
+            except all:
+                print "Unexpected error:", sys.exc_info()[0]
+                sys.exit(4)
+            else:
+                f.close()
 
             # TODO sync DYUPS_CONF to nginx server
 
