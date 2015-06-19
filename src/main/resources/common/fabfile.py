@@ -89,7 +89,7 @@ def docker_run(container_id=None):
         old_container_id = get_running()
 
         # 绑定随机端口
-        run_cmd = "docker run {4} {5} {6} {7} {8} -d -p 127.0.0.1:{0} {1}/{2}:{3}"
+        run_cmd = "docker run {4} {5} {6} {7} {8} -d -p 127.0.0.1::{0} {1}/{2}:{3}"
         container_id = local(run_cmd.format(APP_PORT,
                                             APP_NAME.lower(),
                                             HUB_NAME.lower(),
