@@ -226,12 +226,11 @@ def dyups_update(container_id=None):
 
         if container_port:
             # update dyups upstream.conf case of nginx reload
-            upstream = "upstream {0} {\nkeepalive 100;\nserver {1};\n}"
-            upstream_content = upstream.format(DYUPS_HOST, container_port)
+            upstream = "upstream " + DYUPS_HOST + "{\nkeepalive 100;\nserver " + container_port + ";\n}"
 
             try:
                 f = open(DYUPS_CONF, "w")
-                f.write(upstream_content)
+                f.write(upstream)
             except all:
                 print "Unexpected error:", sys.exc_info()[0]
                 sys.exit(4)
