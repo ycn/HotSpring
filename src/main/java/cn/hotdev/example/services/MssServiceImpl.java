@@ -94,7 +94,7 @@ public class MssServiceImpl implements MssService {
         mssCreate.setIf_pay("0"); // 未付款
         mssCreate.setPayment_name("货到付款");
         mssCreate.setCity("北京");
-        mssCreate.setShipping_fee("0"); // 快递费
+        mssCreate.setShipping_fee("0.0"); // 快递费
         mssCreate.setShipping_name("及时送达");
         mssCreate.setOrder_placed("true");
         mssCreate.setOrder_plat("false");
@@ -185,7 +185,7 @@ public class MssServiceImpl implements MssService {
         good1.setGoods_id("KHW-G-001");
         good1.setGoods_name("准成品-青椒土豆丝");
         good1.setGoods_remark("测试订单: 要多辣");
-        good1.setPrice("32.0");
+        good1.setPrice("8.0");
         good1.setQuantity("2");
         good1.setSpecification("spe");
         good1.setDiscount("1.0");
@@ -202,6 +202,10 @@ public class MssServiceImpl implements MssService {
         good2.setDiscount("1.0");
         good2.setPacking_fee("0");
         list.add(good2);
+
+        // 总金额
+        double shippingFee = Double.parseDouble(mssCreate.getShipping_fee());
+        mssCreate.setTotal_price((8 * 2 + 12 + shippingFee) + "");
 
         mssOrderItems.setOrder_goods(list);
         return mssOrderItems;
