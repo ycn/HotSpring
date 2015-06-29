@@ -65,6 +65,7 @@ public class MssServiceImpl implements MssService {
         String entry = configService.getConfig("mss_url");
         String appId = configService.getConfig("mss_app_id");
         String appKey = configService.getConfig("mss_app_key");
+        String callback = configService.getConfig("mss_callback_url");
 
 //        support(116.412, 39.91209);
 
@@ -74,7 +75,7 @@ public class MssServiceImpl implements MssService {
 
         mssCreate.setPartner_id(appId);
         mssCreate.setPush_time(currentTime + "");
-        mssCreate.setNotify_url("http://wx.hotdev.cn/mss_test/on_notify");
+        mssCreate.setNotify_url(callback);
 
 
         String sign = StringTool.md5("partner_id={}#partner_order_id={}#push_time={}#notify_url={}#key={}",
@@ -121,12 +122,13 @@ public class MssServiceImpl implements MssService {
         String entry = configService.getConfig("mss_url");
         String appId = configService.getConfig("mss_app_id");
         String appKey = configService.getConfig("mss_app_key");
+        String callback = configService.getConfig("mss_callback_url");
 
         int currentTime = (int) (System.currentTimeMillis() / 1000);
 
         mssOrder.setPartner_id(appId);
         mssOrder.setPush_time(currentTime + "");
-        mssOrder.setNotify_url("http://wx.hotdev.cn/mss_test/on_notify");
+        mssOrder.setNotify_url(callback);
 
 
         String sign = StringTool.md5("partner_id={}#partner_order_id={}#push_time={}#notify_url={}#key={}",
