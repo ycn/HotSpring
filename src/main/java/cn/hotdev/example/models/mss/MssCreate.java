@@ -27,7 +27,7 @@ public class MssCreate {
     private String add_time; //下单时间 ，必填，格式同push_time
     private String request_time; //要求送达时间，选填，若不填，值为add_time+50分钟
     private String remark; //订单备注，选填
-    private String if_store_pay; //餐厅是否付款，1：未付款，2：已付款 (必填)
+    private String if_store_pay; //餐厅是否付款，1：未付款，2：已付款 (必填) # 在线支付时请设为2
     private String city; //订单所在城市，必填，汉字，拼音不识别
     private String if_pay; //是否付款，0未付款/1已付款，必填
     private String payment_name; //付款方式：货到付款/在线支付/POS支付，必填
