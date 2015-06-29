@@ -85,7 +85,7 @@ def docker_update_worker():
     old_container_id = get_running()
 
     # 绑定随机端口
-    run_cmd = "docker run {3} {4} {5} {6} {7} {8} -d -p 127.0.0.1::{0} {1}/{2}"
+    run_cmd = "docker run {3} {4} {5} {6} {7} -d -p 127.0.0.1::{0} {1}/{2}"
     container_id = local(run_cmd.format(APP_PORT,
                                         HUB_HOST,
                                         APP_NAME.lower(),
@@ -93,8 +93,7 @@ def docker_update_worker():
                                         "--ulimit nofile=65535:65535",
                                         "-v /data/logs:/data/logs",
                                         "-v /etc/localtime:/etc/localtime:ro",
-                                        '-e "TZ=Asia/Shanghai"',
-                                        "--ip-forward=true"), True)
+                                        '-e "TZ=Asia/Shanghai"'), True)
 
     # delay for app startup
     time.sleep(STARTUP_DELAY)
@@ -140,7 +139,7 @@ def docker_run(container_id=None):
         old_container_id = get_running()
 
         # 绑定随机端口
-        run_cmd = "docker run {3} {4} {5} {6} {7} {8} -d -p 127.0.0.1::{0} {1}:{2}"
+        run_cmd = "docker run {3} {4} {5} {6} {7} -d -p 127.0.0.1::{0} {1}:{2}"
         container_id = local(run_cmd.format(APP_PORT,
                                             APP_NAME.lower(),
                                             APP_VERSION.lower(),
@@ -148,8 +147,7 @@ def docker_run(container_id=None):
                                             "--ulimit nofile=65535:65535",
                                             "-v /data/logs:/data/logs",
                                             "-v /etc/localtime:/etc/localtime:ro",
-                                            '-e "TZ=Asia/Shanghai"',
-                                            "--ip-forward=true"), True)
+                                            '-e "TZ=Asia/Shanghai"'), True)
 
         # delay for app startup
         time.sleep(STARTUP_DELAY)
