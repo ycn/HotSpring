@@ -156,11 +156,11 @@ public class MssServiceImpl implements MssService {
     private MssCreate.MssCustomInfo getCustomInfo(MssCreate mssCreate) {
         MssCreate.MssCustomInfo mssCustomInfo = mssCreate.new MssCustomInfo();
 
-        mssCustomInfo.setBuyer_id("KHW-U-001");
-        mssCustomInfo.setBuyer_name("袁洋");
-        mssCustomInfo.setConsignee("袁洋");
-        mssCustomInfo.setPhone_mob("18518633326");
-        mssCustomInfo.setAddress("安宁庄西路 IMOMA 311");
+        mssCustomInfo.setBuyer_id("1");
+        mssCustomInfo.setBuyer_name("");
+        mssCustomInfo.setConsignee("李先生");
+        mssCustomInfo.setPhone_mob("18610155670");
+        mssCustomInfo.setAddress("星科大厦A座4010");
 
         return mssCustomInfo;
     }
@@ -168,10 +168,10 @@ public class MssServiceImpl implements MssService {
     private MssCreate.MssStoreInfo getStoreInfo(MssCreate mssCreate) {
         MssCreate.MssStoreInfo mssStoreInfo = mssCreate.new MssStoreInfo();
 
-        mssStoreInfo.setSeller_id("KHW-S-001");
+        mssStoreInfo.setSeller_id("1");
         mssStoreInfo.setSeller_name("金百万马甸店");
-        mssStoreInfo.setTel("4006662000");
-        mssStoreInfo.setAddress("北京市朝阳区裕民路3号(近北辰路) 金百万马甸店");
+        mssStoreInfo.setTel("18600665971");
+        mssStoreInfo.setAddress("北京市朝阳区裕民路3号天星大厦");
 
         return mssStoreInfo;
     }
@@ -184,30 +184,30 @@ public class MssServiceImpl implements MssService {
         List<MssCreate.MssOrderGood> list = new ArrayList<MssCreate.MssOrderGood>();
 
         MssCreate.MssOrderGood good1 = mssCreate.new MssOrderGood();
-        good1.setGoods_id("KHW-G-001");
-        good1.setGoods_name("准成品-青椒土豆丝");
-        good1.setGoods_remark("测试订单: 要多辣");
-        good1.setPrice("8.0");
-        good1.setQuantity("2");
-        good1.setSpecification("spe");
-        good1.setDiscount("1.0");
+        good1.setGoods_id("2");
+        good1.setGoods_name("胡辣鸡丁");
+        good1.setGoods_remark("测试订单");
+        good1.setPrice("18.0");
+        good1.setQuantity("1");
+        good1.setSpecification("份");
+        good1.setDiscount("0.0");
         good1.setPacking_fee("0");
         list.add(good1);
 
         MssCreate.MssOrderGood good2 = mssCreate.new MssOrderGood();
-        good2.setGoods_id("KHW-G-002");
-        good2.setGoods_name("准成品-西红柿鸡蛋");
+        good2.setGoods_id("3");
+        good2.setGoods_name("小炒有机花菜");
         good2.setGoods_remark("测试订单");
-        good2.setPrice("12.0");
+        good2.setPrice("15.0");
         good2.setQuantity("1");
-        good2.setSpecification("spe");
-        good2.setDiscount("1.0");
+        good2.setSpecification("份");
+        good2.setDiscount("0.0");
         good2.setPacking_fee("0");
         list.add(good2);
 
         // 总金额
         double shippingFee = Double.parseDouble(mssCreate.getShipping_fee());
-        mssCreate.setTotal_price((8 * 2 + 12 + shippingFee) + "");
+        mssCreate.setTotal_price("33");
 
         mssOrderItems.setOrder_goods(list);
         return mssOrderItems;
