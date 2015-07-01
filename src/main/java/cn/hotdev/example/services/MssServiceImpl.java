@@ -91,9 +91,9 @@ public class MssServiceImpl implements MssService {
         mssCreate.setAdd_time(currentTime + "");
         mssCreate.setRequest_time((currentTime + 40 * 60) + ""); // 40分钟 送达
         mssCreate.setRemark("加急送，该单为测试订单");
-        mssCreate.setIf_store_pay("2");
-        mssCreate.setIf_pay("1"); // 未付款
-        mssCreate.setPayment_name("在线支付");
+        mssCreate.setIf_store_pay("1");
+        mssCreate.setIf_pay("0"); // 0:未付款
+        mssCreate.setPayment_name("货到付款");
         mssCreate.setCity("北京");
         mssCreate.setShipping_fee("0.0"); // 快递费
         mssCreate.setShipping_name("及时送达");
@@ -160,7 +160,7 @@ public class MssServiceImpl implements MssService {
         mssCustomInfo.setBuyer_name("");
         mssCustomInfo.setConsignee("李先生");
         mssCustomInfo.setPhone_mob("18610155670");
-        mssCustomInfo.setAddress("星科大厦A座4010");
+        mssCustomInfo.setAddress("天通苑南地铁站");
 
         return mssCustomInfo;
     }
