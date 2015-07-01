@@ -90,7 +90,7 @@ public class MssServiceImpl implements MssService {
 
         mssCreate.setAdd_time(currentTime + "");
         mssCreate.setRequest_time((currentTime + 40 * 60) + ""); // 40分钟 送达
-        mssCreate.setRemark("测试订单，请勿分配");
+        mssCreate.setRemark("加急送，该单为测试订单");
         mssCreate.setIf_store_pay("2");
         mssCreate.setIf_pay("1"); // 未付款
         mssCreate.setPayment_name("在线支付");
