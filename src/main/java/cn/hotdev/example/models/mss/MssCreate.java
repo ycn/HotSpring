@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MssCreate {
+public class MssCreate implements Serializable {
 
     private String partner_id; //趣活快送提供的唯一的appKey，必填
     private String partner_order_id; //合作伙伴订单ID(唯一) ，必填

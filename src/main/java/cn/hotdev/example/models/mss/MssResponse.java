@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+
 /**
  * Created by andy on 6/10/15.
  */
@@ -12,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MssResponse {
+public class MssResponse implements Serializable {
 
     private int state;
 

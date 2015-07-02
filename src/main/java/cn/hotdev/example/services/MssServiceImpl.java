@@ -89,11 +89,19 @@ public class MssServiceImpl implements MssService {
 
 
         mssCreate.setAdd_time(currentTime + "");
-        mssCreate.setRequest_time((currentTime + 40 * 60) + ""); // 40分钟 送达
+        mssCreate.setRequest_time((currentTime + 50 * 60) + ""); // 50分钟 送达
         mssCreate.setRemark("加急送，该单为测试订单");
-        mssCreate.setIf_store_pay("1");
-        mssCreate.setIf_pay("0"); // 0:未付款
-        mssCreate.setPayment_name("货到付款");
+
+        if (mssCreate.getPayment_name().equals("货到付款")) {
+            mssCreate.setIf_store_pay("1");
+            mssCreate.setIf_pay("0"); // 0:未付款
+            mssCreate.setPayment_name("货到付款");
+        } else {
+            mssCreate.setIf_store_pay("2");
+            mssCreate.setIf_pay("1"); // 0:未付款
+            mssCreate.setPayment_name("在线支付");
+        }
+
         mssCreate.setCity("北京");
         mssCreate.setShipping_fee("0.0"); // 快递费
         mssCreate.setShipping_name("及时送达");
@@ -190,7 +198,11 @@ public class MssServiceImpl implements MssService {
         good1.setPrice("18.0");
         good1.setQuantity("1");
         good1.setSpecification("份");
-        good1.setDiscount("0.0");
+        if (mssCreate.getPayment_name().equals("货到付款")) {
+            good1.setDiscount("0.0");
+        } else {
+            good1.setDiscount("1.0");
+        }
         good1.setPacking_fee("0");
         list.add(good1);
 
@@ -201,7 +213,11 @@ public class MssServiceImpl implements MssService {
         good2.setPrice("15.0");
         good2.setQuantity("1");
         good2.setSpecification("份");
-        good2.setDiscount("0.0");
+        if (mssCreate.getPayment_name().equals("货到付款")) {
+            good2.setDiscount("0.0");
+        } else {
+            good2.setDiscount("1.0");
+        }
         good2.setPacking_fee("0");
         list.add(good2);
 
